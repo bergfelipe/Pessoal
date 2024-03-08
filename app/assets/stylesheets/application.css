@@ -17718,7 +17718,7 @@ html[data-layout=horizontal] .reverse-mode .left-part.dashboard-right-part {
   background: var(--bs-purple) !important;
   color: #fff !important;
   font-weight: 400;
-  border: 1px dotted rgba(255, 255, 255, 0.3);
+  border-color:black;
   padding: 10px 30px;
   font-size: 15px;
   border-radius: 5px;
