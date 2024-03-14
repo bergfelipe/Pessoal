@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :admins
   resources :pacientes
   resources :consulta
   resources :medicos
