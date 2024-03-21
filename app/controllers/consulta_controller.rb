@@ -22,6 +22,9 @@ class ConsultaController < ApplicationController
 
   # GET /consulta/1/edit
   def edit
+    @consulta = Consultum.all
+    @pacientes = Paciente.all
+    @medicos = Medico.all
   end
 
   # POST /consulta or /consulta.json

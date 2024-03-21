@@ -10,13 +10,36 @@
       </ul>
     </div>
   <% end %>
-
-  <div>
-    <%= form.label :nome, style: "display: block" %>
-    <%= form.text_field :nome %>
-  </div>
-
-  <div>
-    <%= form.submit %>
+  <div class="card">
+  <div class="card-body">
+                    <div class="row">
+                      <div class="col-md-4 mb-3">
+                        <label class="form-label" for="validationServer01">Médico</label>
+                        <%=form.text_field :nome, class: 'form-control', required:  'true' %>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <label class="form-label" for="validationServer01">Paciente</label>
+                        <%= form.collection_select :paciente_id, @pacientes, :id, :nome, { prompt: "Selecione um Paciente" }, { class: 'form-control', required:  'true'} %>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <label class="form-label" for="validationServer01">Tipo</label>
+                        <%= form.text_field :tipo, class: 'form-control', required:  'true' %>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6 mb-3">
+                        <label class="form-label" for="validationServer01">Ficha</label>
+                        <%= form.text_area :ficha, class: 'form-control', required:  'true' %>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                        <label class="form-label" for="validationServer01">Data e hora da consulta</label>
+                        <%= form.datetime_field :data_consulta,  { class: 'form-control', required:  'true'} %>
+                      </div>
+                    </div>
+                    <button class="btn btn-success" type="submit">
+                      Salvar
+                    </button>
+                </div>
+    </div>
   </div>
 <% end %>

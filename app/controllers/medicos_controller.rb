@@ -13,6 +13,8 @@ class MedicosController < ApplicationController
   # GET /medicos/new
   def new
     @medico = Medico.new
+    @consulta = Consultum.all
+    @pacientes = Paciente.all
   end
 
   # GET /medicos/1/edit
@@ -65,6 +67,6 @@ class MedicosController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def medico_params
-      params.require(:medico).permit(:nome)
+      params.require(:medico).permit(:nome , :consultums_attributes => [:id, :consultum_date, :medico_id, :paciente_id, :_destroy, :pacientes_attributes => [:id, :name]])
     end
 end
