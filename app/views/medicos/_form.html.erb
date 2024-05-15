@@ -43,6 +43,41 @@
             </div>
           </div>
         </div>
+        <div class="card">
+          <h4 class="card-title px-9 py-4 mb-0">Pacientes do Dia</h4>
+          <div class="card-body">
+  
+              <!-- ============================================================== -->
+              <!-- Comment widgets -->
+              <!-- ============================================================== -->
+              <div class="comment-widgets position-relative mb-2 simplebar-scrollable-y" data-simplebar="init" style="height: 475px"><div class="simplebar-wrapper" style="margin: 0px;"><div class="simplebar-height-auto-observer-wrapper"><div class="simplebar-height-auto-observer"></div></div><div class="simplebar-mask"><div class="simplebar-offset" style="right: 0px; bottom: 0px;"><div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: 100%; overflow: hidden scroll;"><div class="simplebar-content" style="padding: 0px;">
+                  <!-- Comment Row -->
+                  <% @consulta.each do |f| %>
+                  <div class="d-flex gap-9 comment-row mb-5">
+                      <span class="flex-shrink-0"><img src="/user-09.jpeg" alt="user" width="56" height="56" class="rounded round-50"></span>
+                      <div class="comment-text">
+                          <div class="hstack justify-content-between gap-6 mb-1">
+                              <div class="hstack gap-6">
+                                  <h5 class="mb-0"> <%= f.paciente.nome  %></h5>
+                                  <p class="mb-0 fs-3">daqui a 5 minutos</p>
+                              </div>
+                              <span class="badge bg-success-subtle text-success rounded fw-semibold p-2"><%=  formatar_data_hora_minuto(f.data_consulta) %></span>
+                          </div>
+                          <p class="comment-details mb-6 fs-3 text-muted truncate-2 truncate-2">
+                            <%= f.paciente.ficha  %>
+                          </p>
+                          <ul class="list-unstyled mb-0 hstack gap-3 lh-1">
+                              <li><a class="fs-6 text-muted" href="javascript:void(0)"><i class="ti ti-edit"></i></a></li>
+                              <li><a class="fs-6 text-muted" href="javascript:void(0)"><i class="ti ti-square-check"></i></a></li>
+                              <li><a class="fs-6 text-muted" href="javascript:void(0)"><i class="ti ti-heart"></i></a></li>
+                          </ul>
+                      </div>
+                  </div>
+                  <%end%>
+
+              </div></div></div></div><div class="simplebar-placeholder" style="width: 574px; height: 624px;"></div></div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="width: 0px; display: none;"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: visible;"><div class="simplebar-scrollbar" style="height: 361px; transform: translate3d(0px, 0px, 0px); display: block;"></div></div></div>
+          </div>
+      </div>
       </div>
       <div class="col-lg-8">
         <div id="consultas-container">
@@ -51,7 +86,7 @@
               <div class="row">
                 <div class="col-md-4 mb-3">
                   <label class="form-label">Paciente</label>
-                  <%= form.collection_select :paciente_id, @pacientes, :id, :nome, { prompt: "Selecione um Paciente" }, { class: 'form-control', required:  'true'} %>
+                  <%= form.collection_select :pacientes_id, @pacientes, :id, :nome, { prompt: "Selecione um Paciente" }, { class: 'form-control', required:  'true'} %>
                 </div>
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Data e hora da consulta</label>

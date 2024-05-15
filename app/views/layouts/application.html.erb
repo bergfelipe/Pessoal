@@ -13,28 +13,54 @@
   </head>
     
   <body style="background-color: #EDF1F5;">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="home">Consultorio</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-    
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="/medicos">Medicos</a>
-          </li>
-              <li class="nav-item">
-            <a class="nav-link" href="/consulta">Consulta</a>
-          </li>
-              <li class="nav-item">
-            <a class="nav-link" href="/pacientes">Pacientes</a>
-          </li>
-          </li>
-      
-        </ul>
-      </div>
-    </nav>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">YourAppName</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="/medicos">Medicos</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/consulta">Consulta</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/pacientes">Pacientes</a>
+      </li>
+    </ul>
+    <ul class="navbar-nav ml-auto">
+      <% if admin_signed_in? %>
+        <li class="nav-item">
+          <%= link_to 'Logout', destroy_admin_session_custom_path, class: "nav-link" %>
+
+        </li>
+      <% else %>
+        <li class="nav-item">
+          <%= link_to 'Login', new_admin_session_path, class: 'nav-link' %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</nav>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var logoutLink = document.getElementById('logout-link');
+    if (logoutLink) {
+      logoutLink.addEventListener('click', function(event) {
+        event.preventDefault();
+        var logoutForm = document.createElement('form');
+        logoutForm.method = 'DELETE';
+        logoutForm.action = this.getAttribute('href');
+        document.body.appendChild(logoutForm);
+        logoutForm.submit();
+      });
+    }
+  });
+</script>
+
     <br>
     </div>
     <div class="container" style="max-width: 1842px!important;">

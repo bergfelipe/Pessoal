@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
-  devise_for :admins
+   devise_for :admins
+   devise_scope :admin do
+    get '/admins/sign_out_custom', to: 'devise/sessions#destroy', as: :destroy_admin_session_custom
+  end
   resources :pacientes
   resources :consulta
   resources :medicos
@@ -12,5 +15,5 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   # Defines the root path route ("/")
-  # root "posts#index"
+  root "home#index"
 end

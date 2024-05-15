@@ -1,0 +1,63 @@
+<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+  <div class="position-relative overflow-hidden radial-gradient min-vh-100 w-100 d-flex align-items-center justify-content-center">
+    <div class="d-flex align-items-center justify-content-center w-100">
+      <div class="row justify-content-center w-100">
+        <div class="col-md-8 col-lg-6 col-xxl-3">
+          <div class="card mb-0" style="background-color: #FCFBF9;">
+            <div class="card-body p-5">
+              <a href="../horizontal/index.html" class="text-nowrap logo-img text-center d-block mb-5 w-100">
+                <b class="logo-icon">
+                  <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
+                  <!-- Dark Logo icon -->
+                  <img
+                    src="https://img.freepik.com/vetores-gratis/conceito-de-medico-on-line_23-2148514648.jpg?t=st=1715812338~exp=1715815938~hmac=f17132cfc4a1ae18404ffadfcf5e61ec7e453d786af053f9f3490484d8cf1c34&w=826"
+                    alt="homepage"
+                    width="330"
+                    class="dark-logo"
+                  />
+                </span>
+              </a>
+              <div class="position-relative text-center my-4">
+                <h2>Med Office</h2>
+                <p class="mb-0 fs-4 px-3 d-inline-block  card text-dark z-3 position-relative border-0 shadow-none">Faça seu Login</p>
+                <span class="border-top border-dark-subtle opacity-25 w-100 position-absolute top-50 start-50 translate-middle"></span>
+              </div>
+              <form>
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">CPF</label>
+                  <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control", id: "exampleInputEmail1", aria_describedby: "emailHelp" %>
+                </div>
+                <div class="mb-4">
+                  <label for="exampleInputPassword1" class="form-label">Senha:</label>
+                  <%= f.password_field :password, autocomplete: "current-password", class: "form-control", id: "exampleInputPassword1" %>
+                </div>
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                  <div class="form-check">
+                    <input class="form-check-input primary" type="checkbox" value="" id="flexCheckChecked" checked>
+                    <label class="form-check-label text-dark" for="flexCheckChecked">
+                      Lembrar de min
+                    </label>
+                  </div>
+                  <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
+                  <%= link_to "Esqueceu sua senha ?", new_password_path(resource_name), class: "text-primary fw-medium" %><br />
+                <% end %>
+                </div>
+                 <%= f.submit "Entrar", class:'btn btn-success w-100 py-8 mb-4 rounded-2' %>
+                <div class="d-flex align-items-center justify-content-center">
+                  <p class="fs-4 mb-0 fw-medium">Novo por aqui?</p>
+                  <% if devise_mapping.registerable? && controller_name != 'registrations' %>
+                  <%= link_to "Criar conta", new_registration_path(resource_name), class: "text-primary fw-medium ms-2" %><br />
+                <% end %>
+                
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+<% end %>
+
