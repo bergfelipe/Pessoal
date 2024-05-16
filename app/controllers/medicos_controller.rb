@@ -40,11 +40,14 @@ class MedicosController < ApplicationController
 
   # PATCH/PUT /medicos/1 or /medicos/1.json
   def update
-    @medico = Medico.find(params[:id])
-    if @medico.update(medico_params)
-      # Atualização bem-sucedida
-    else
-      # Tratar erro de atualização
+    respond_to do |format|
+      if @medico.update(medico_params)
+        format.html { redirect_to medico_url(@medico), notice: "Medico was successfully updated." }
+        format.json { render :show, status: :ok, location: @medico }
+      else
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: @medico.errors, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -66,6 +69,6 @@ class MedicosController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def medico_params
-      params.require(:medico).permit(:nome , :paciente_id, :data_consulta, :consultums_attributes => [:id, :consultum_date, :medico_id, :paciente_id, :_destroy, :pacientes_attributes => [:id, :nome]])
+      params.require(:medico).permit(:nome , :cpf, :paciente_id, :data_consulta, :consultums_attributes => [:id, :consultum_date, :medico_id, :paciente_id, :_destroy, :pacientes_attributes => [:id, :nome]])
     end
 end

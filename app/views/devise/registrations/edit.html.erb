@@ -30,6 +30,27 @@
     <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
     <%= f.password_field :current_password, autocomplete: "current-password" %>
   </div>
+  <div class="field">
+    <%= f.label :cpf %><br />
+    <%= f.text_field :cpf %>
+  </div>
+
+  <div class="field">
+    <%= f.label :nome %><br />
+    <%= f.text_field :nome %>
+  </div>
+
+  <div class="field">
+  <%= f.label :tipo %><br />
+  <%= f.select :tipo, [['Secretaria', 'secretaria'], ['Doutor', 'doutor']] %>
+</div>
+
+<div class="field">
+  <%= f.label :perfil %><br />
+  <%= f.select :perfil, [['Admin', 'admin'], ['Normal', 'normal']] %>
+</div>
+
+
 
   <div class="actions">
     <%= f.submit "Update" %>

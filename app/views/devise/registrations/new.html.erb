@@ -21,6 +21,28 @@
     <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
   </div>
 
+  <div class="field">
+    <%= f.label :cpf %><br />
+    <%= f.text_field :cpf %>
+  </div>
+
+  <div class="field">
+  <%= f.label :nome %><br />
+  <%= f.text_field :nome %>
+</div>
+
+  <div class="field">
+  <%= f.label :tipo %><br />
+  <%= f.select :tipo, [['Secretaria', 'secretaria'], ['Doutor', 'doutor']] %>
+</div>
+
+<div class="field">
+  <%= f.label :perfil %><br />
+  <%= f.select :perfil, [['Admin', 'admin'], ['Normal', 'normal']] %>
+</div>
+
+
+
   <div class="actions">
     <%= f.submit "Sign up" %>
   </div>

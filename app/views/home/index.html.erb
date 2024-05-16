@@ -8,10 +8,14 @@
           <img src="user-02.jpg" alt="user" class="rounded" width="100">
         </div>
         <div class="">
-          <h3 class="fw-semibold mb-1">Dr. Allan Delom</h3>
-          <h6 class="text-muted fw-normal mb-2">Denstista</h6>
+          <% if current_admin.tipo == 'doutor' %>
+            <h3 class="fw-semibold mb-1">Dr. <%= current_admin.nome %></h3>
+          <% else %>
+            <h3 class="fw-semibold mb-1"><%= current_admin.nome %></h3>
+            <h6 class="text-muted fw-normal mb-2"><%= current_admin.tipo %></h6>
+          <% end %>
           <span class="badge bg-info-subtle text-success rounded fw-semibold">
-            Admin
+            <%= current_admin.perfil %>
           </span>
         </div>
       </div>
