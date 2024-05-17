@@ -34,144 +34,100 @@
       </div>
     </div>
   </div>
-    <div class="card">
-      <div class="d-flex justify-content-between align-items-center px-9 py-4">
-        <h4 class="card-title mb-0">Consultas do Dia</h4>
-        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addConsultaModal">+ Nova Consulta</button>
-    </div>
+  <div class="card">
+    <div class="d-flex justify-content-between align-items-center px-9 py-4">
+      <h4 class="card-title mb-0">Consultas do Dia</h4>
+      <%= search_form_for @q, url: home_path, remote: true, html: { id: 'search_form' } do |f| %>
+      <div class="form-group">
+        <%= f.hidden_field :medico_id_eq, id: "medico_id_field" %>
+        <a href="#" data-bs-toggle="modal" data-bs-target="#medicoModal" class="btn btn-secondary">Selecionar Médico</a>
+      </div>
+    <% end %>
+    
     <!-- Modal -->
-<div class="modal fade" id="addConsultaModal" tabindex="-1" aria-labelledby="addConsultaModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-      <div class="modal-content">
+    <div class="modal fade" id="medicoModal" tabindex="-1" aria-labelledby="medicoModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
           <div class="modal-header">
-              <h5 class="modal-title" id="addConsultaModalLabel">Adicionar Consulta</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <h5 class="modal-title" id="medicoModalLabel">Selecione um Médico</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-              <div class="row">
-                  <div class="col-md-6 mb-3">
-                      <label class="form-label">Paciente</label>
-                      <select class="form-select" required>
-                          <option value="" disabled selected>Selecione um Paciente</option>
-                          <!-- Opções de pacientes aqui -->
-                      </select>
-                  </div>
-                  <div class="col-md-6 mb-3">
-                      <label class="form-label">Data e hora da consulta</label>
-                      <input type="datetime-local" class="form-control" required>
-                  </div>
-              </div>
+            <ul class="list-group">
+              <% @medicos.each do |medico| %>
+                <li class="list-group-item">
+                  <a href="#" class="select-medico" data-id="<%= medico.id %>"><%= medico.nome %></a>
+                </li>
+              <% end %>
+            </ul>
           </div>
-          <div class="modal-footer">
-              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Fechar</button>
-              <button type="button" class="btn btn-success">Salvar Consulta</button>
-          </div>
+        </div>
       </div>
-  </div>
-</div>
-        <div class="card-body">
-
-            <!-- ============================================================== -->
-            <!-- Comment widgets -->
-            <!-- ============================================================== -->
-            <div class="comment-widgets position-relative mb-2 simplebar-scrollable-y" data-simplebar="init" style="height: 475px"><div class="simplebar-wrapper" style="margin: 0px;"><div class="simplebar-height-auto-observer-wrapper"><div class="simplebar-height-auto-observer"></div></div><div class="simplebar-mask"><div class="simplebar-offset" style="right: 0px; bottom: 0px;"><div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: 100%; overflow: hidden scroll;"><div class="simplebar-content" style="padding: 0px;">
-                <!-- Comment Row -->
-                <div class="d-flex gap-9 comment-row mb-5">
-                    <span class="flex-shrink-0"><img src="user-09.jpeg" alt="user" width="56" height="56" class="rounded round-50"></span>
-                    <div class="comment-text">
+    </div>
+    
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll(".select-medico").forEach(function(element) {
+          element.addEventListener("click", function(event) {
+            event.preventDefault();
+            var medicoId = this.getAttribute("data-id");
+            var medicoNome = this.textContent;
+            document.getElementById("medico_id_field").value = medicoId;
+            var modal = bootstrap.Modal.getInstance(document.getElementById("medicoModal"));
+            modal.hide();
+    
+            // Submit the form via AJAX
+            document.getElementById('search_form').submit();
+          });
+        });
+      });
+    </script>
+    
+        
+      <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addConsultaModal">+ Nova Consulta</button>
+    </div>
+    <div class="card-body">
+      <!-- Lista de consultas -->
+      <div class="comment-widgets position-relative mb-2 simplebar-scrollable-y" data-simplebar="init" style="height: 475px">
+        <div class="simplebar-wrapper" style="margin: 0px;">
+          <div class="simplebar-height-auto-observer-wrapper">
+            <div class="simplebar-height-auto-observer"></div>
+          </div>
+          <div class="simplebar-mask">
+            <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
+              <div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: 100%; overflow: hidden scroll;">
+                <div class="simplebar-content" style="padding: 0px;">
+                  <% @consultas.each do |f| %>
+                    <div class="d-flex gap-9 comment-row mb-5">
+                      <span class="flex-shrink-0"><img src="/user-05.jpg" alt="user" width="56" height="56" class="rounded round-50"></span>
+                      <div class="comment-text">
                         <div class="hstack justify-content-between gap-6 mb-1">
-                            <div class="hstack gap-6">
-                                <h5 class="mb-0">James Anderson</h5>
-                                <p class="mb-0 fs-3">daqui a 5 minutos</p>
-                            </div>
-                            <span class="badge bg-success-subtle text-success rounded fw-semibold p-2">15:45</span>
+                          <div class="hstack gap-6">
+                            <h5 class="mb-0"> <%= f.paciente.nome %></h5>
+                            <p class="mb-0 fs-3">daqui a 5 minutos</p>
+                          </div>
+                          <span class="badge bg-success-subtle text-success rounded fw-semibold p-2"><%=  formatar_data_hora_minuto(f.data_consulta) %></span>
                         </div>
                         <p class="comment-details mb-6 fs-3 text-muted truncate-2 truncate-2">
-                            Lorem Ipsum is simply dummy text of the printing and type setting
-                            industry.
+                          <%= f.paciente.ficha %>
                         </p>
                         <ul class="list-unstyled mb-0 hstack gap-3 lh-1">
-                            <li><a class="fs-6 text-muted" href="javascript:void(0)"><i class="ti ti-edit"></i></a></li>
-                            <li><a class="fs-6 text-muted" href="javascript:void(0)"><i class="ti ti-square-check"></i></a></li>
-                            <li><a class="fs-6 text-muted" href="javascript:void(0)"><i class="ti ti-heart"></i></a></li>
+                          <li><a class="fs-6 text-muted" href="javascript:void(0)"><i class="ti ti-edit"></i></a></li>
+                          <li><a class="fs-6 text-muted" href="javascript:void(0)"><i class="ti ti-square-check"></i></a></li>
+                          <li><a class="fs-6 text-muted" href="javascript:void(0)"><i class="ti ti-heart"></i></a></li>
                         </ul>
+                      </div>
                     </div>
+                  <% end %>
                 </div>
-                <!-- Comment Row -->
-                <div class="d-flex gap-9 comment-row mb-5">
-                    <span class="flex-shrink-0"><img src="user-02.jpg" alt="user" width="56" height="56" class="rounded round-50"></span>
-                    <div class="comment-text">
-                        <div class="hstack justify-content-between gap-6 mb-1">
-                            <div class="hstack gap-6">
-                                <h5 class="mb-0">Johnathan Doeting</h5>
-                                <p class="mb-0 fs-3">daqui a 5 minutos</p>
-                              </div>
-                              <span class="badge bg-success-subtle text-success rounded fw-semibold p-2">15:45</span>
-                        </div>
-                        <p class="comment-details mb-6 fs-3 text-muted truncate-2">
-                            Lorem Ipsum is simply dummy text of the printing and type setting
-                            industry.
-                            Lorem Ipsum has beenorem Ipsum is simply dummy text of the printing
-                            and type setting industry.
-                        </p>
-                        <ul class="list-unstyled mb-0 hstack gap-3 lh-1">
-                            <li><a class="fs-6 text-muted" href="javascript:void(0)"><i class="ti ti-edit"></i></a></li>
-                            <li><a class="fs-6 text-muted" href="javascript:void(0)"><i class="ti ti-square-check"></i></a></li>
-                            <li><a class="fs-6 text-muted" href="javascript:void(0)"><i class="ti ti-heart"></i></a></li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- Comment Row -->
-                <div class="d-flex gap-9 comment-row mb-5">
-                    <span class="flex-shrink-0"><img src="user-06.jpg" alt="user" width="56" height="56" class="rounded round-50"></span>
-                    <div class="comment-text">
-                        <div class="hstack justify-content-between gap-6 mb-1">
-                            <div class="hstack gap-6">
-                                <h5 class="mb-0">James Anderson</h5>
-                                <p class="mb-0 fs-3">daqui a 5 minutos</p>
-                              </div>
-                              <span class="badge bg-success-subtle text-success rounded fw-semibold p-2">15:45</span>
-                        </div>
-                        <p class="comment-details mb-6 fs-3 text-muted truncate-2">
-                            Lorem Ipsum is simply dummy text of the printing and type setting
-                            industry.
-                            Lorem Ipsum has beenorem Ipsum is simply dummy text of the printing
-                            and type setting industry.
-                        </p>
-                        <ul class="list-unstyled mb-0 hstack gap-3 lh-1">
-                            <li><a class="fs-6 text-muted" href="javascript:void(0)"><i class="ti ti-edit"></i></a></li>
-                            <li><a class="fs-6 text-muted" href="javascript:void(0)"><i class="ti ti-square-check"></i></a></li>
-                            <li><a class="fs-6 text-muted" href="javascript:void(0)"><i class="ti ti-heart"></i></a></li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- Comment Row -->
-                <div class="d-flex gap-9 comment-row mb-5">
-                    <span class="flex-shrink-0"><img src="user-05.jpg" alt="user" width="56" height="56" class="rounded round-50"></span>
-                    <div class="comment-text">
-                        <div class="hstack justify-content-between gap-6 mb-1">
-                            <div class="hstack gap-6">
-                                <h5 class="mb-0">James Anderson</h5>
-                                <p class="mb-0 fs-3">daqui a 5 minutos</p>
-                            </div>
-                            <span class="badge bg-success-subtle text-success rounded fw-semibold p-2">15:45</span>
-                        </div>
-                        <p class="comment-details mb-6 fs-3 text-muted truncate-2">
-                            Lorem Ipsum is simply dummy text of the printing and type setting
-                            industry.
-                            Lorem Ipsum has beenorem Ipsum is simply dummy text of the printing
-                            and type setting industry.
-                        </p>
-                        <ul class="list-unstyled mb-0 hstack gap-3 lh-1">
-                            <li><a class="fs-6 text-muted" href="javascript:void(0)"><i class="ti ti-edit"></i></a></li>
-                            <li><a class="fs-6 text-muted" href="javascript:void(0)"><i class="ti ti-square-check"></i></a></li>
-                            <li><a class="fs-6 text-muted" href="javascript:void(0)"><i class="ti ti-heart"></i></a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div></div></div></div><div class="simplebar-placeholder" style="width: 574px; height: 624px;"></div></div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="width: 0px; display: none;"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: visible;"><div class="simplebar-scrollbar" style="height: 361px; transform: translate3d(0px, 0px, 0px); display: block;"></div></div></div>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
+  
 </div>
 <div class="col-lg-8">
   <div class="card overflow-hidden">
@@ -820,3 +776,36 @@
 
 </div>
 
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="addConsultaModal" tabindex="-1" aria-labelledby="addConsultaModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="addConsultaModalLabel">Adicionar Consulta</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                  <div class="row">
+                      <div class="col-md-6 mb-3">
+                          <label class="form-label">Paciente</label>
+                          <select class="form-select" required>
+                              <option value="" disabled selected>Selecione um Paciente</option>
+                              <!-- Opções de pacientes aqui -->
+                          </select>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <label class="form-label">Data e hora da consulta</label>
+                          <input type="datetime-local" class="form-control" required>
+                      </div>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Fechar</button>
+                  <button type="button" class="btn btn-success">Salvar Consulta</button>
+              </div>
+          </div>
+      </div>
+    </div>
