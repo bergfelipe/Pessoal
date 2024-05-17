@@ -48,7 +48,7 @@
       </div>
       <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#addConsultaModal"><i class="fas fa-plus-circle"></i> Nova Consulta</button>
     </div>
-    
+    <hr>
     <div class="card-body">
       <!-- Lista de consultas -->
       <div class="comment-widgets position-relative mb-2 simplebar-scrollable-y" data-simplebar="init" style="height: 475px">
@@ -784,14 +784,25 @@
                 <h5 class="modal-title" id="medicoModalLabel">Selecione um Médico</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
+              <hr>
               <div class="modal-body">
-                <ul class="list-group">
+                <div class="py-2">
+                  <ul class="list-style-none chat-list">
                   <% @medicos.each do |medico| %>
-                    <li class="list-group-item">
-                      <a href="#" class="select-medico" data-id="<%= medico.id %>"><%= medico.nome %></a>
+                    <li class="mb-4">
+                      <a href="javascript:void(0)">
+                        <div href="#" class="select-medico d-flex align-items-center" data-id="<%= medico.id %>">
+                          <img src="user-06.jpg" class="rounded round-50">
+                          <div class="ms-3">
+                            <h6 class="select-medico" href="#" class="select-medico" data-id="<%= medico.id %>"><%= medico.nome %></h6>
+                            <small class="text-success">Online</small>
+                          </div>
+                        </div>
+                      </a>
                     </li>
-                  <% end %>
-                </ul>
+                    <% end %>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
