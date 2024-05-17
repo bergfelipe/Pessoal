@@ -36,56 +36,19 @@
   </div>
   <div class="card">
     <div class="d-flex justify-content-between align-items-center px-9 py-4">
-      <h4 class="card-title mb-0">Consultas do Dia</h4>
-      <%= search_form_for @q, url: home_path, remote: true, html: { id: 'search_form' } do |f| %>
-      <div class="form-group">
-        <%= f.hidden_field :medico_id_eq, id: "medico_id_field" %>
-        <a href="#" data-bs-toggle="modal" data-bs-target="#medicoModal" class="btn btn-secondary">Selecionar Médico</a>
-      </div>
-    <% end %>
-    
-    <!-- Modal -->
-    <div class="modal fade" id="medicoModal" tabindex="-1" aria-labelledby="medicoModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="medicoModalLabel">Selecione um Médico</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <ul class="list-group">
-              <% @medicos.each do |medico| %>
-                <li class="list-group-item">
-                  <a href="#" class="select-medico" data-id="<%= medico.id %>"><%= medico.nome %></a>
-                </li>
-              <% end %>
-            </ul>
-          </div>
+      <div class="d-flex align-items-center">
+        <h4 class="card-title mb-0">Consultas do Dia</h4>
+        <span class="mx-2">-</span>
+        <div class="form-group mb-0">
+          <%= search_form_for @q, url: home_path, remote: true, html: { id: 'search_form' } do |f| %>
+            <%= f.hidden_field :medico_id_eq, id: "medico_id_field" %>
+            <a href="#" data-bs-toggle="modal" data-bs-target="#medicoModal" class="btn btn-secondary btn-sm">Selecionar Médico <i class="fas fa-user-md"></i></a>
+          <% end %>
         </div>
       </div>
+      <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#addConsultaModal"><i class="fas fa-plus-circle"></i> Nova Consulta</button>
     </div>
     
-    <script>
-      document.addEventListener("DOMContentLoaded", function() {
-        document.querySelectorAll(".select-medico").forEach(function(element) {
-          element.addEventListener("click", function(event) {
-            event.preventDefault();
-            var medicoId = this.getAttribute("data-id");
-            var medicoNome = this.textContent;
-            document.getElementById("medico_id_field").value = medicoId;
-            var modal = bootstrap.Modal.getInstance(document.getElementById("medicoModal"));
-            modal.hide();
-    
-            // Submit the form via AJAX
-            document.getElementById('search_form').submit();
-          });
-        });
-      });
-    </script>
-    
-        
-      <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addConsultaModal">+ Nova Consulta</button>
-    </div>
     <div class="card-body">
       <!-- Lista de consultas -->
       <div class="comment-widgets position-relative mb-2 simplebar-scrollable-y" data-simplebar="init" style="height: 475px">
@@ -112,9 +75,9 @@
                           <%= f.paciente.ficha %>
                         </p>
                         <ul class="list-unstyled mb-0 hstack gap-3 lh-1">
-                          <li><a class="fs-6 text-muted" href="javascript:void(0)"><i class="ti ti-edit"></i></a></li>
-                          <li><a class="fs-6 text-muted" href="javascript:void(0)"><i class="ti ti-square-check"></i></a></li>
-                          <li><a class="fs-6 text-muted" href="javascript:void(0)"><i class="ti ti-heart"></i></a></li>
+                          <li data-toggle="tooltip" data-placement="bottom" title="Editar Consulta"><a class="fs-6 text-muted" href="javascript:void(0)"><i class="fas fa-edit"></i></a></li>
+                          <li data-toggle="tooltip" data-placement="bottom" title="Ver Consulta"><a class="fs-6 text-muted" href="javascript:void(0)"><i class="far fa-calendar-alt"></i></a></li>
+                          <li data-toggle="tooltip" data-placement="bottom" title="ver Ficha"><a class="fs-6 text-muted" href="javascript:void(0)"><i class="fas fa-notes-medical"></i></i></a></li>
                         </ul>
                       </div>
                     </div>
@@ -125,6 +88,9 @@
           </div>
         </div>
       </div>
+    </div>
+    <div class="card-footer text-end" style="background-color: #FFFFFF;">
+      <a href="path_to_all_consultations" class="btn btn-primary btn-sm">Todas as Consultas</a>
     </div>
   </div>
   
@@ -809,3 +775,41 @@
           </div>
       </div>
     </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="medicoModal" tabindex="-1" aria-labelledby="medicoModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="medicoModalLabel">Selecione um Médico</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <ul class="list-group">
+                  <% @medicos.each do |medico| %>
+                    <li class="list-group-item">
+                      <a href="#" class="select-medico" data-id="<%= medico.id %>"><%= medico.nome %></a>
+                    </li>
+                  <% end %>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <script>
+          document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll(".select-medico").forEach(function(element) {
+              element.addEventListener("click", function(event) {
+                event.preventDefault();
+                var medicoId = this.getAttribute("data-id");
+                var medicoNome = this.textContent;
+                document.getElementById("medico_id_field").value = medicoId;
+                var modal = bootstrap.Modal.getInstance(document.getElementById("medicoModal"));
+                modal.hide();
+        
+                // Submit the form via AJAX
+                document.getElementById('search_form').submit();
+              });
+            });
+          });
+        </script>
