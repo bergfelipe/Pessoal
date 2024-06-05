@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# Use foreman to start the processes defined in Procfile.dev
+if [ -f Procfile.dev ]; then
+  exec foreman start -f Procfile.dev
+else
+  echo "Procfile.dev not found"
+  exit 1
+fi

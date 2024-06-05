@@ -61,27 +61,46 @@
               <div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: 100%; overflow: hidden scroll;">
                 <div class="simplebar-content" style="padding: 0px;">
                   <% @consultas.each do |f| %>
-                    <div class="d-flex gap-9 comment-row mb-5">
-                      <span class="flex-shrink-0"><img src="/user-05.jpg" alt="user" width="56" height="56" class="rounded round-50"></span>
-                      <div class="comment-text">
-                        <div class="hstack justify-content-between gap-6 mb-1">
-                          <div class="hstack gap-6">
-                            <h5 class="mb-0"> <%= f.paciente.nome %></h5>
-                            <p class="mb-0 fs-3">daqui a 5 minutos</p>
-                          </div>
-                          <span class="badge bg-success-subtle text-success rounded fw-semibold p-2"><%=  formatar_data_hora_minuto(f.data_consulta) %></span>
+                  <div class="d-flex gap-9 comment-row mb-5">
+                    <span class="flex-shrink-0"><img src="/user-05.jpg" alt="user" width="56" height="56" class="rounded round-50"></span>
+                    <div class="comment-text flex-grow-1">
+                      <div class="hstack justify-content-between gap-6 mb-1">
+                        <div class="d-flex align-items-center gap-6">
+                          <h5 class="mb-0"> <%= f.paciente.nome %></h5>
+                          <p class="mb-0 fs-3">daqui a 5 minutos</p>
                         </div>
-                        <p class="comment-details mb-6 fs-3 text-muted truncate-2 truncate-2">
-                          <%= f.paciente.ficha %>
-                        </p>
-                        <ul class="list-unstyled mb-0 hstack gap-3 lh-1">
-                          <li data-toggle="tooltip" data-placement="bottom" title="Editar Consulta"><a class="fs-6 text-muted" href="javascript:void(0)"><i class="fas fa-edit"></i></a></li>
-                          <li data-toggle="tooltip" data-placement="bottom" title="Ver Consulta"><a class="fs-6 text-muted" href="javascript:void(0)"><i class="far fa-calendar-alt"></i></a></li>
-                          <li data-toggle="tooltip" data-placement="bottom" title="ver Ficha"><a class="fs-6 text-muted" href="javascript:void(0)"><i class="fas fa-notes-medical"></i></i></a></li>
-                        </ul>
+                        <span class="badge bg-success-subtle text-success rounded fw-semibold p-2 ms-auto"><%= formatar_data_hora_minuto(f.data_consulta) %></span>
                       </div>
+                      <% if f.paciente.descricao.nil? %>
+                      <p class="comment-details mb-6 fs-3 text-muted truncate-2 truncate-2">
+                        Nenhuma descrição a ser exibida.
+                      </p>
+                    <% else %>
+                      <p class="comment-details mb-6 fs-3 text-muted truncate-2 truncate-2">
+                        <%= f.paciente.descricao %>
+                      </p>
+                    <% end %>
+                    
+                      <ul class="list-unstyled mb-0 hstack gap-3 lh-1">
+                        <li data-toggle="tooltip" data-placement="bottom" title="Editar Consulta">
+                          <%= link_to edit_consultum_path(f), class: 'fs-5 text-muted' do %>
+                            <i class="fas fa-edit"></i>
+                          <% end %>
+                        </li>
+                        <li data-toggle="tooltip" data-placement="bottom" title="Ver Calendário">
+                          <%= link_to f, class: 'fs-6 text-muted' do %>
+                            <i class="far fa-calendar-alt"></i>
+                          <% end %>
+                        </li>
+                        <li data-bs-toggle="modal" data-bs-target="#ficha" data-toggle="tooltip" data-placement="bottom" title="Ver Ficha">
+                          <a class="fs-6 text-muted" href="javascript:void(0)" data-consulta-id="<%= f.id %>" data-consulta-paciente="<%= f.paciente.nome %>" data-consulta-ficha="<%= f.paciente.ficha %>" onclick="openFichaModal(this)">
+                            <i class="fas fa-notes-medical"></i>
+                          </a>
+                        </li>
+                      </ul>
                     </div>
-                  <% end %>
+                  </div>
+                <% end %>
                 </div>
               </div>
             </div>
@@ -742,39 +761,8 @@
 
 </div>
 
+  
 
-
-
-    <!-- Modal -->
-    <div class="modal fade" id="addConsultaModal" tabindex="-1" aria-labelledby="addConsultaModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <h5 class="modal-title" id="addConsultaModalLabel">Adicionar Consulta</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                  <div class="row">
-                      <div class="col-md-6 mb-3">
-                          <label class="form-label">Paciente</label>
-                          <select class="form-select" required>
-                              <option value="" disabled selected>Selecione um Paciente</option>
-                              <!-- Opções de pacientes aqui -->
-                          </select>
-                      </div>
-                      <div class="col-md-6 mb-3">
-                          <label class="form-label">Data e hora da consulta</label>
-                          <input type="datetime-local" class="form-control" required>
-                      </div>
-                  </div>
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Fechar</button>
-                  <button type="button" class="btn btn-success">Salvar Consulta</button>
-              </div>
-          </div>
-      </div>
-    </div>
 
         <!-- Modal -->
         <div class="modal fade" id="medicoModal" tabindex="-1" aria-labelledby="medicoModalLabel" aria-hidden="true">
@@ -807,7 +795,40 @@
             </div>
           </div>
         </div>
-        <script>
+
+
+          <!-- Modal -->
+          <div class="modal fade" id="fichaModal" tabindex="-1" aria-labelledby="fichaModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="fichaModalLabel">Ficha do Paciente</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <h5 id="modalPacienteNome"></h5>
+                  <p id="modalPacienteFicha"></p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <script>
+            function openFichaModal(element) {
+              var consultaId = element.getAttribute('data-consulta-id');
+              var pacienteNome = element.getAttribute('data-consulta-paciente');
+              var pacienteFicha = element.getAttribute('data-consulta-ficha');
+          
+              document.getElementById('modalPacienteNome').innerText = pacienteNome;
+              document.getElementById('modalPacienteFicha').innerText = pacienteFicha;
+          
+              var fichaModal = new bootstrap.Modal(document.getElementById('fichaModal'));
+              fichaModal.show();
+            }
+
           document.addEventListener("DOMContentLoaded", function() {
             document.querySelectorAll(".select-medico").forEach(function(element) {
               element.addEventListener("click", function(event) {
