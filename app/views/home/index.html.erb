@@ -1,173 +1,200 @@
-
 <div class="row">
-<div class="col-lg-4">
-  <div class="card">
-    <div class="card-body">
-      <div class="d-flex flex-row gap-3">
-        <div class="">
-          <img src="user-02.jpg" alt="user" class="rounded" width="100">
-        </div>
-        <div class="">
-          <% if current_admin.tipo == 'doutor' %>
-            <h3 class="fw-semibold mb-1">Dr. <%= current_admin.nome %></h3>
-          <% else %>
-            <h3 class="fw-semibold mb-1"><%= current_admin.nome %></h3>
-            <h6 class="text-muted fw-normal mb-2"><%= current_admin.tipo %></h6>
-          <% end %>
-          <span class="badge bg-info-subtle text-success rounded fw-semibold">
-            <%= current_admin.perfil %>
-          </span>
-        </div>
-      </div>
-      <div class="row mt-4 pt-4">
-        <div class="col text-center border-end">
-          <h3 class="fw-semibold">14</h3>
-          <h6 class="text-muted">Pacientes</h6>
-        </div>
-        <div class="col text-center border-end">
-          <h3 class="fw-semibold">54</h3>
-          <h6 class="text-muted">Consultas</h6>
-        </div>
-        <div class="col text-center">
-         <button class="btn btn-primary"  type="submit">Ver Perfil</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="card">
-    <div class="d-flex justify-content-between align-items-center px-9 py-4">
-      <div class="d-flex align-items-center">
-        <h4 class="card-title mb-0">Consultas do Dia</h4>
-        <span class="mx-2">-</span>
-        <div class="form-group mb-0">
-          <%= search_form_for @q, url: home_path, remote: true, html: { id: 'search_form' } do |f| %>
-            <%= f.hidden_field :medico_id_eq, id: "medico_id_field" %>
-            <a href="#" data-bs-toggle="modal" data-bs-target="#medicoModal" class="btn btn-secondary btn-sm">Selecionar Médico <i class="fas fa-user-md"></i></a>
-          <% end %>
-        </div>
-      </div>
-      <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#addConsultaModal"><i class="fas fa-plus-circle"></i> Nova Consulta</button>
-    </div>
-    <hr>
-    <div class="card-body">
-      <!-- Lista de consultas -->
-      <div class="comment-widgets position-relative mb-2 simplebar-scrollable-y" data-simplebar="init" style="height: 475px">
-        <div class="simplebar-wrapper" style="margin: 0px;">
-          <div class="simplebar-height-auto-observer-wrapper">
-            <div class="simplebar-height-auto-observer"></div>
+  <div class="col-lg-4">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex flex-row gap-3">
+          <div class="">
+            <img src="user-02.jpg" alt="user" class="rounded" width="100">
           </div>
-          <div class="simplebar-mask">
-            <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
-              <div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: 100%; overflow: hidden scroll;">
-                <div class="simplebar-content" style="padding: 0px;">
-                  <% @consultas.each do |f| %>
-                  <div class="d-flex gap-9 comment-row mb-5">
-                    <span class="flex-shrink-0"><img src="/user-05.jpg" alt="user" width="56" height="56" class="rounded round-50"></span>
-                    <div class="comment-text flex-grow-1">
-                      <div class="hstack justify-content-between gap-6 mb-1">
-                        <div class="d-flex align-items-center gap-6">
-                          <h5 class="mb-0"> <%= f.paciente.nome %></h5>
-                          <p class="mb-0 fs-3">daqui a 5 minutos</p>
-                        </div>
-                        <span class="badge bg-success-subtle text-success rounded fw-semibold p-2 ms-auto"><%= formatar_data_hora_minuto(f.data_consulta) %></span>
-                      </div>
-                      <% if f.paciente.descricao.nil? %>
-                      <p class="comment-details mb-6 fs-3 text-muted truncate-2 truncate-2">
-                        Nenhuma descrição a ser exibida.
-                      </p>
-                    <% else %>
-                      <p class="comment-details mb-6 fs-3 text-muted truncate-2 truncate-2">
-                        <%= f.paciente.descricao %>
-                      </p>
-                    <% end %>
-                    
-                      <ul class="list-unstyled mb-0 hstack gap-3 lh-1">
-                        <li data-toggle="tooltip" data-placement="bottom" title="Editar Consulta">
-                          <%= link_to edit_consultum_path(f), class: 'fs-5 text-muted' do %>
-                            <i class="fas fa-edit"></i>
-                          <% end %>
-                        </li>
-                        <li data-toggle="tooltip" data-placement="bottom" title="Ver Calendário">
-                          <%= link_to f, class: 'fs-6 text-muted' do %>
-                            <i class="far fa-calendar-alt"></i>
-                          <% end %>
-                        </li>
-                        <li data-bs-toggle="modal" data-bs-target="#ficha" data-toggle="tooltip" data-placement="bottom" title="Ver Ficha">
-                          <a class="fs-6 text-muted" href="javascript:void(0)" data-consulta-id="<%= f.id %>" data-consulta-paciente="<%= f.paciente.nome %>" data-consulta-ficha="<%= f.paciente.ficha %>" onclick="openFichaModal(this)">
-                            <i class="fas fa-notes-medical"></i>
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
+          <div class="">
+            <% if current_admin.tipo=='doutor' %>
+              <h3 class="fw-semibold mb-1">Dr. <%= current_admin.nome %>
+              </h3>
+              <% else %>
+                <h3 class="fw-semibold mb-1">
+                  <%= current_admin.nome %>
+                </h3>
+                <h6 class="text-muted fw-normal mb-2">
+                  <%= current_admin.tipo %>
+                </h6>
                 <% end %>
+                  <span class="badge bg-info-subtle text-success rounded fw-semibold">
+                    <%= current_admin.perfil %>
+                  </span>
+          </div>
+        </div>
+        <div class="row mt-4 pt-4">
+          <div class="col text-center border-end">
+            <h3 class="fw-semibold">
+              <%= @pacientes.count %>
+            </h3>
+            <h6 class="text-muted">Pacientes</h6>
+          </div>
+          <div class="col text-center border-end">
+            <h3 class="fw-semibold">
+              <%= @consultas.count %>
+            </h3>
+            <h6 class="text-muted">Consultas</h6>
+          </div>
+          <div class="col text-center">
+            <button class="btn btn-primary" type="submit">Ver Perfil</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="d-flex justify-content-between align-items-center px-9 py-4">
+        <div class="d-flex align-items-center">
+          <h4 class="card-title mb-0">Consultas do Dia</h4>
+          <span class="mx-2">-</span>
+          <div class="form-group mb-0">
+            <%= search_form_for @q, url: home_path, remote: true, html: { id: 'search_form' } do |f| %>
+              <%= f.hidden_field :medico_id_eq, id: "medico_id_field" %>
+                <a href="#" data-bs-toggle="modal" data-bs-target="#medicoModal"
+                  class="btn btn-secondary btn-sm">Selecionar Médico <i class="fas fa-user-md"></i></a>
+                <% end %>
+          </div>
+        </div>
+        <%= button_to new_consultum_path, method: :get, class: "btn btn-success btn-sm" , data: { bs_toggle: "modal" ,
+          bs_target: "#addConsultaModal" } do %>
+          <i class="fas fa-plus-circle"></i> Nova Consulta
+          <% end %>
+      </div>
+      <div class="card-body">
+        <!-- Lista de consultas -->
+        <div class="comment-widgets position-relative mb-2 simplebar-scrollable-y" data-simplebar="init"
+          style="height: 475px">
+          <div class="simplebar-wrapper" style="margin: 0px;">
+            <div class="simplebar-height-auto-observer-wrapper">
+              <div class="simplebar-height-auto-observer"></div>
+            </div>
+            <div class="simplebar-mask">
+              <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
+                <div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content"
+                  style="height: 100%; overflow: hidden scroll;">
+                  <div class="simplebar-content" style="padding: 0px;">
+                    <% if @consultas.blank? %>
+                    <p>Nenhuma consulta a ser exibida</p>
+                  <% else %>
+                    <% @consultas.each do |f| %>
+                      <div class="d-flex gap-9 comment-row mb-5">
+                        <span class="flex-shrink-0"><img src="/user-05.jpg" alt="user" width="56" height="56"
+                            class="rounded round-50"></span>
+                        <div class="comment-text flex-grow-1">
+                          <div class="hstack justify-content-between gap-6 mb-1">
+                            <div class="d-flex align-items-center gap-6">
+                              <h5 class="mb-0">
+                                <%= f.paciente.nome %>
+                              </h5>
+                              <p class="mb-0 fs-3">daqui a 5 minutos</p>
+                            </div>
+                            <span class="badge bg-success-subtle text-success rounded fw-semibold p-2 ms-auto">
+                              <%= formatar_data_hora_minuto(f.data_consulta) %>
+                            </span>
+                          </div>
+                          <% if f.tipo.nil? %>
+                            <p class="comment-details mb-6 fs-3 text-muted truncate-2 truncate-2">
+                              Nenhuma descrição a ser exibida.
+                            </p>
+                          <% else %>
+                            <p class="comment-details mb-6 fs-3 text-muted truncate-2 truncate-2">
+                              <%= f.tipo %>
+                            </p>
+                          <% end %>
+                          <ul class="list-unstyled mb-0 hstack gap-3 lh-1">
+                            <li data-toggle="tooltip" data-placement="bottom" title="Editar Consulta">
+                              <%= link_to edit_consultum_path(f), class: 'fs-5 text-muted' do %>
+                                <i class="fas fa-edit"></i>
+                              <% end %>
+                            </li>
+                            <li data-toggle="tooltip" data-placement="bottom" title="Ver Consulta">
+                              <%= link_to f, class: 'fs-6 text-muted' do %>
+                                <i class="far fa-calendar-alt"></i>
+                              <% end %>
+                            </li>
+                            <li data-bs-toggle="modal" data-bs-target="#fichaModal" data-toggle="tooltip"
+                              data-placement="bottom" title="Ver Ficha">
+                              <a class="fs-6 text-muted" href="javascript:void(0)" data-consulta-id="<%= f.id %>"
+                                data-consulta-paciente="<%= f.paciente.nome %>"
+                                data-consulta-ficha="<%= f.paciente.ficha %>"
+                                data-consulta-consulta-ficha="<%= f.ficha %>" onclick="openFichaModal(this)">
+                                <i class="fas fa-notes-medical"></i>
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    <% end %>
+                  <% end %>
+                  
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="card-footer text-end" style="background-color: #FFFFFF;">
-      <a href="path_to_all_consultations" class="btn btn-primary btn-sm">Todas as Consultas</a>
-    </div>
-  </div>
-  
-</div>
-<div class="col-lg-8">
-  <div class="card overflow-hidden">
-    <div class="card-body bg-purple text-white mailbox-widget">
-      <div class="d-flex align-items-center justify-content-between gap-2 pb-4 mb-2">
-        <h3 class="card-title mb-0 text-white">Página de Atalhos</h3>
-    </div>
-    
-      <div class="d-flex align-items-center justify-content-between">
-        <ul class="nav nav-tabs custom-tab border-bottom-0 gap-3" id="myTab" role="tablist">
-          <li class="nav-item" role="presentation">
-            <a class="nav-link active" id="inbox-tab" data-bs-toggle="tab" aria-controls="inbox" href="#inbox"
-              role="tab" aria-selected="true">
-              <span class="d-block d-md-none"><iconify-icon icon="solar:letter-linear"
-                  class="iconify-md icon-center"></iconify-icon></span>
-              <span class="d-none d-md-block text-capitalize fw-semibold">
-                Caixa</span>
-            </a>
-          </li>
-          <li class="nav-item" role="presentation">
-            <a class="nav-link" id="sent-tab" data-bs-toggle="tab" aria-controls="sent" href="#sent" role="tab"
-              aria-selected="false" tabindex="-1">
-              <span class="d-block d-md-none"><iconify-icon icon="solar:plain-2-linear"
-                  class="iconify-md icon-center"></iconify-icon></span>
-              <span class="d-none d-md-block text-capitalize fw-semibold">Consultas</span>
-            </a>
-          </li>
-          <li class="nav-item" role="presentation">
-            <a class="nav-link" id="spam-tab" data-bs-toggle="tab" aria-controls="spam" href="#spam" role="tab"
-              aria-selected="false" tabindex="-1">
-              <span class="d-block d-md-none"><iconify-icon icon="solar:user-block-linear"
-                  class="iconify-md icon-center"></iconify-icon></span>
-              <span class="d-none d-md-block text-capitalize fw-semibold">Pacientes</span>
-            </a>
-          </li>
-          <li class="nav-item" role="presentation">
-            <a class="nav-link" id="delete-tab" data-bs-toggle="tab" aria-controls="delete" href="#delete" role="tab"
-              aria-selected="false" tabindex="-1">
-              <span class="d-block d-md-none"><iconify-icon icon="solar:trash-bin-trash-linear"
-                  class="iconify-md icon-center"></iconify-icon></span>
-              <span class="d-none d-md-block text-capitalize fw-semibold">Medicos</span>
-            </a>
-          </li>
-        </ul>
+      <div class="card-footer text-end" style="background-color: #FFFFFF;">
+        <a href="path_to_all_consultations" class="btn btn-primary btn-sm">Todas as Consultas</a>
       </div>
-
-
     </div>
-    <div class="tab-content" id="myTabContent">
-      <div class="tab-pane fade active show" id="inbox" aria-labelledby="inbox-tab" role="tabpanel">
-        <div>
+
+  </div>
+  <div class="col-lg-8">
+    <div class="card overflow-hidden">
+      <div class="card-body bg-purple text-white mailbox-widget">
+        <div class="d-flex align-items-center justify-content-between gap-2 pb-4 mb-2">
+          <h3 class="card-title mb-0 text-white">Página de Atalhos</h3>
+        </div>
+
+        <div class="d-flex align-items-center justify-content-between">
+          <ul class="nav nav-tabs custom-tab border-bottom-0 gap-3" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <a class="nav-link active" id="inbox-tab" data-bs-toggle="tab" aria-controls="inbox" href="#inbox"
+                role="tab" aria-selected="true">
+                <span class="d-block d-md-none"><iconify-icon icon="solar:letter-linear"
+                    class="iconify-md icon-center"></iconify-icon></span>
+                <span class="d-none d-md-block text-capitalize fw-semibold">
+                  Caixa</span>
+              </a>
+            </li>
+            <li class="nav-item" role="presentation">
+              <a class="nav-link" id="sent-tab" data-bs-toggle="tab" aria-controls="sent" href="#sent" role="tab"
+                aria-selected="false" tabindex="-1">
+                <span class="d-block d-md-none"><iconify-icon icon="solar:plain-2-linear"
+                    class="iconify-md icon-center"></iconify-icon></span>
+                <span class="d-none d-md-block text-capitalize fw-semibold">Consultas</span>
+              </a>
+            </li>
+            <li class="nav-item" role="presentation">
+              <a class="nav-link" id="spam-tab" data-bs-toggle="tab" aria-controls="spam" href="#spam" role="tab"
+                aria-selected="false" tabindex="-1">
+                <span class="d-block d-md-none"><iconify-icon icon="solar:user-block-linear"
+                    class="iconify-md icon-center"></iconify-icon></span>
+                <span class="d-none d-md-block text-capitalize fw-semibold">Pacientes</span>
+              </a>
+            </li>
+            <li class="nav-item" role="presentation">
+              <a class="nav-link" id="delete-tab" data-bs-toggle="tab" aria-controls="delete" href="#delete" role="tab"
+                aria-selected="false" tabindex="-1">
+                <span class="d-block d-md-none"><iconify-icon icon="solar:trash-bin-trash-linear"
+                    class="iconify-md icon-center"></iconify-icon></span>
+                <span class="d-none d-md-block text-capitalize fw-semibold">Medicos</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+
+      </div>
+      <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade active show" id="inbox" aria-labelledby="inbox-tab" role="tabpanel">
+          <div>
             <div class="card body text-bg-success">
               <div class="card-body text-white">
                 <div class="d-flex flex-row align-items-center">
-                  <div class="round-40 rounded-circle d-flex align-items-center justify-content-center bg-success-subtle text-success">
+                  <div
+                    class="round-40 rounded-circle d-flex align-items-center justify-content-center bg-success-subtle text-success">
                     <i class="ti ti-credit-card fs-6"></i>
                   </div>
                   <div class="ms-3">
@@ -243,7 +270,8 @@
                       ms-5 ms-md-auto
                       ps-4 ps-md-0
                     ">
-                    <span class="fs-2 text-muted"> <span class="badge bg-info-subtle text-success rounded fw-semibold p-2">$89</span></span>
+                    <span class="fs-2 text-muted"> <span
+                        class="badge bg-info-subtle text-success rounded fw-semibold p-2">$89</span></span>
                   </div>
                 </div>
               </div>
@@ -275,7 +303,8 @@
                       ms-5 ms-md-auto
                       ps-4 ps-md-0
                     ">
-                    <span class="fs-2 text-muted"> <span class="badge bg-info-subtle text-success rounded fw-semibold p-2">$19</span></span>
+                    <span class="fs-2 text-muted"> <span
+                        class="badge bg-info-subtle text-success rounded fw-semibold p-2">$19</span></span>
                   </div>
                 </div>
               </div>
@@ -307,7 +336,8 @@
                       ms-5 ms-md-auto
                       ps-4 ps-md-0
                     ">
-                    <span class="fs-2 text-muted"> <span class="badge bg-info-subtle text-success rounded fw-semibold p-2">$60</span></span>
+                    <span class="fs-2 text-muted"> <span
+                        class="badge bg-info-subtle text-success rounded fw-semibold p-2">$60</span></span>
                   </div>
                 </div>
               </div>
@@ -341,104 +371,106 @@
                       ms-5 ms-md-auto
                       ps-4 ps-md-0
                     ">
-                     <span class="badge bg-info-subtle text-success rounded fw-semibold p-2">$44</span>
+                    <span class="badge bg-info-subtle text-success rounded fw-semibold p-2">$44</span>
                   </div>
                 </div>
               </div>
             </ul>
+          </div>
         </div>
-      </div>
-      <br>
-      <div class="tab-pane fade" id="sent" aria-labelledby="sent-tab" role="tabpanel">
-        <div>
-          <div class="col-lg-12">
-            <div class="card  overflow-hidden w-100">
-              <div class="row no-gutters">
-                <div class="col-md-4 position-relative">
-                  <div class="card-body">
-                    <span class="display-6"><span class="fw-normal">23</span></span>
-                    <h4 class="pb-2 mb-0 text-muted fw-normal">Thursday</h4>
-                    <span class="weight-border"></span>
-                    <h5 class="pt-3">March 2021</h5>
-                    <div class="bottom-text">
-                      <a href="#" class="text-secondary text-capitalize fw-semibold">3 Tasks</a>
-                      <h5 class="mb-0 mt-2">Prepare Project</h5>
+        <br>
+        <div class="tab-pane fade" id="sent" aria-labelledby="sent-tab" role="tabpanel">
+          <div>
+            <div class="col-lg-12">
+              <div class="card  overflow-hidden w-100">
+                <div class="row no-gutters">
+                  <div class="col-md-4 position-relative">
+                    <div class="card-body">
+                      <span class="display-6"><span class="fw-normal">23</span></span>
+                      <h4 class="pb-2 mb-0 text-muted fw-normal">Thursday</h4>
+                      <span class="weight-border"></span>
+                      <h5 class="pt-3">March 2021</h5>
+                      <div class="bottom-text">
+                        <a href="#" class="text-secondary text-capitalize fw-semibold">3 Tasks</a>
+                        <h5 class="mb-0 mt-2">Prepare Project</h5>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div class="col-md-8">
-                  <div class="bg-purple text-white">
-                    <div class="table-responsive p-3">
-                      <table class="calendar-schedule-table">
-                        <tbody>
-                          <tr>
-                            <td colspan="5">
-                              <h3 class="month-option text-white">March</h3>
-                            </td>
-                            <td></td>
-                            <td>
-                              <a href="#" class="text-white font-24"><iconify-icon icon="tabler:plus" class="iconify-lg"></iconify-icon></a>
-                            </td>
-                          </tr>
-                          <tr class="text-capitalize">
-                            <td class="opacity-50">Sun</td>
-                            <td class="opacity-50">Mon</td>
-                            <td class="opacity-50">Tue</td>
-                            <td class="opacity-50">Wed</td>
-                            <td class="opacity-50">Thu</td>
-                            <td class="opacity-50">Fri</td>
-                            <td class="opacity-50">Sat</td>
-                          </tr>
-                          <tr>
-                            <td></td>
-                            <td>1</td>
-                            <td>2</td>
-                            <td>3</td>
-                            <td>4</td>
-                            <td>5</td>
-                            <td>6</td>
-                          </tr>
-                          <tr>
-                            <td>7</td>
-                            <td>8</td>
-                            <td>9</td>
-                            <td>10</td>
-                            <td>11</td>
-                            <td>12</td>
-                            <td>13</td>
-                          </tr>
-                          <tr>
-                            <td>14</td>
-                            <td>15</td>
-                            <td>16</td>
-                            <td>17</td>
-                            <td>18</td>
-                            <td>19</td>
-                            <td>20</td>
-                          </tr>
-                          <tr>
-                            <td>21</td>
-                            <td>22</td>
-                            <td class="cal-active">23</td>
-                            <td>24</td>
-                            <td>25</td>
-                            <td>26</td>
-                            <td>27</td>
-                          </tr>
-                          <tr>
-                            <td>28</td>
-                            <td>29</td>
-                            <td>30</td>
-                            <td>31</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                          </tr>
-                          <tr>
-                            <td colspan="7"></td>
-                          </tr>
-                        </tbody>
-                      </table>
+                  <div class="col-md-8">
+                    <div class="bg-purple text-white">
+                      <div class="table-responsive p-3">
+                        <table class="calendar-schedule-table">
+                          <tbody>
+                            <tr>
+                              <td colspan="5">
+                                <h3 class="month-option text-white">March</h3>
+                              </td>
+                              <td></td>
+                              <td>
+                                <a href="#" class="text-white font-24"><iconify-icon icon="tabler:plus"
+                                    class="iconify-lg"></iconify-icon></a>
+                              </td>
+                            </tr>
+                            <tr class="text-capitalize">
+                              <td class="opacity-50">Sun</td>
+                              <td class="opacity-50">Mon</td>
+                              <td class="opacity-50">Tue</td>
+                              <td class="opacity-50">Wed</td>
+                              <td class="opacity-50">Thu</td>
+                              <td class="opacity-50">Fri</td>
+                              <td class="opacity-50">Sat</td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td>1</td>
+                              <td>2</td>
+                              <td>3</td>
+                              <td>4</td>
+                              <td>5</td>
+                              <td>6</td>
+                            </tr>
+                            <tr>
+                              <td>7</td>
+                              <td>8</td>
+                              <td>9</td>
+                              <td>10</td>
+                              <td>11</td>
+                              <td>12</td>
+                              <td>13</td>
+                            </tr>
+                            <tr>
+                              <td>14</td>
+                              <td>15</td>
+                              <td>16</td>
+                              <td>17</td>
+                              <td>18</td>
+                              <td>19</td>
+                              <td>20</td>
+                            </tr>
+                            <tr>
+                              <td>21</td>
+                              <td>22</td>
+                              <td class="cal-active">23</td>
+                              <td>24</td>
+                              <td>25</td>
+                              <td>26</td>
+                              <td>27</td>
+                            </tr>
+                            <tr>
+                              <td>28</td>
+                              <td>29</td>
+                              <td>30</td>
+                              <td>31</td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                            </tr>
+                            <tr>
+                              <td colspan="7"></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -446,230 +478,243 @@
             </div>
           </div>
         </div>
-      </div>
-      <div class="tab-pane fade" id="spam" aria-labelledby="spam-tab" role="tabpanel">
-        <div>
-              <div class="card-body">
-                <h5 class="card-title mb-0">Pacientes Cadastrados</h5>
-              </div>
-              <div class="table-responsive">
-                <table class="table text-nowrap no-wrap user-table mb-0">
-                  <thead>
-                    <tr>
-                      <th scope="col" class="border-0  ps-4">
-                        #
-                      </th>
-                      <th scope="col" class="border-0 ">
-                       Nome
-                      </th>
-                      <th scope="col" class="border-0 ">
-                       Médico
-                      </th>
-                      <th scope="col" class="border-0 ">
-                        Email
-                      </th>
-                      <th scope="col" class="border-0 ">
-                        Status
-                      </th>
-                      <th scope="col" class="border-0 ">
-                        Manage
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td class="ps-4">1</td>
-                      <td>
-                        <div class="d-flex align-items-center">
-                          <img src="user-06.jpg" class="rounded  round-50">
-                          <div class="ms-3">
-                            <h6 class=" mb-0">
-                              Daniel Kristeen
-                            </h6>
-                            <span class="text-muted">Texas, Unitedd states</span>
-                          </div>
+        <div class="tab-pane fade" id="spam" aria-labelledby="spam-tab" role="tabpanel">
+          <div>
+            <div class="card-body">
+              <h5 class="card-title mb-0">Pacientes Cadastrados</h5>
+            </div>
+            <div class="table-responsive">
+              <table class="table text-nowrap no-wrap user-table mb-0">
+                <thead>
+                  <tr>
+                    <th scope="col" class="border-0  ps-4">
+                      #
+                    </th>
+                    <th scope="col" class="border-0 ">
+                      Nome
+                    </th>
+                    <th scope="col" class="border-0 ">
+                      Médico
+                    </th>
+                    <th scope="col" class="border-0 ">
+                      Email
+                    </th>
+                    <th scope="col" class="border-0 ">
+                      Status
+                    </th>
+                    <th scope="col" class="border-0 ">
+                      Manage
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="ps-4">1</td>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <img src="user-06.jpg" class="rounded  round-50">
+                        <div class="ms-3">
+                          <h6 class=" mb-0">
+                            Daniel Kristeen
+                          </h6>
+                          <span class="text-muted">Texas, Unitedd states</span>
                         </div>
-                      </td>
-                      <td>
-                        <span>Visual Designer</span><br>
-                        <span>Past : teacher</span>
-                      </td>
-                      <td>
-                        <span>daniel@website.com</span><br>
-                        <span>999 - 444 - 555</span>
-                      </td>
-                      <td>
-                        <select class="form-select category-select border-0 bg-inverse" id="exampleFormControlSelect1">
-                          <option>Modulator</option>
-                          <option>Admin</option>
-                          <option>User</option>
-                          <option>Subscriber</option>
-                        </select>
-                      </td>
-                      <td>
-                        <a href="javascript:void(0)" class="text-info edit"> <i class="fas fa-edit"></i></iconify-icon>
-                       </a>
-                       <a href="javascript:void(0)" class="text-dark delete ms-2"><i class="fas fa-eye"></i></iconify-icon></a>
-                     </td>  
-                      
-                    </tr>
-                    <tr>
-                      <td class="ps-4">2</td>
-                      <td>
-                        <div class="d-flex align-items-center">
-                          <img src="user-02.jpg" class="rounded  round-50">
-                          <div class="ms-3">
-                            <h6 class=" mb-0">
-                              Emma Smith
-                            </h6>
-                            <span class="text-muted">Texas, Unitedd states</span>
-                          </div>
+                      </div>
+                    </td>
+                    <td>
+                      <span>Visual Designer</span><br>
+                      <span>Past : teacher</span>
+                    </td>
+                    <td>
+                      <span>daniel@website.com</span><br>
+                      <span>999 - 444 - 555</span>
+                    </td>
+                    <td>
+                      <select class="form-select category-select border-0 bg-inverse" id="exampleFormControlSelect1">
+                        <option>Modulator</option>
+                        <option>Admin</option>
+                        <option>User</option>
+                        <option>Subscriber</option>
+                      </select>
+                    </td>
+                    <td>
+                      <a href="javascript:void(0)" class="text-info edit"> <i class="fas fa-edit"></i></iconify-icon>
+                      </a>
+                      <a href="javascript:void(0)" class="text-dark delete ms-2"><i
+                          class="fas fa-eye"></i></iconify-icon></a>
+                    </td>
+
+                  </tr>
+                  <tr>
+                    <td class="ps-4">2</td>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <img src="user-02.jpg" class="rounded  round-50">
+                        <div class="ms-3">
+                          <h6 class=" mb-0">
+                            Emma Smith
+                          </h6>
+                          <span class="text-muted">Texas, Unitedd states</span>
                         </div>
-                      </td>
-                      <td>
-                        <span>Visual Designer</span><br>
-                        <span>Past : teacher</span>
-                      </td>
-                      <td>
-                        <span>daniel@website.com</span><br>
-                        <span>999 - 444 - 555</span>
-                      </td>
-                      <td>
-                        <select class="form-select category-select border-0 bg-inverse" id="exampleFormControlSelect1">
-                          <option>Modulator</option>
-                          <option>Admin</option>
-                          <option>User</option>
-                          <option>Subscriber</option>
-                        </select>
-                      </td>
-                      <td>
-                        <a href="javascript:void(0)" class="text-info edit"> <i class="fas fa-edit"></i></iconify-icon>
-                       </a>
-                       <a href="javascript:void(0)" class="text-dark delete ms-2"><i class="fas fa-eye"></i></iconify-icon></a>
-                     </td>  
-                      
-                    </tr>
-                    <tr>
-                      <td class="ps-4">3</td>
-                      <td>
-                        <div class="d-flex align-items-center">
-                          <img src="user-05.jpg" class="rounded  round-50">
-                          <div class="ms-3">
-                            <h6 class=" mb-0">
-                              Olivia Johnson
-                            </h6>
-                            <span class="text-muted">Texas, Unitedd states</span>
-                          </div>
+                      </div>
+                    </td>
+                    <td>
+                      <span>Visual Designer</span><br>
+                      <span>Past : teacher</span>
+                    </td>
+                    <td>
+                      <span>daniel@website.com</span><br>
+                      <span>999 - 444 - 555</span>
+                    </td>
+                    <td>
+                      <select class="form-select category-select border-0 bg-inverse" id="exampleFormControlSelect1">
+                        <option>Modulator</option>
+                        <option>Admin</option>
+                        <option>User</option>
+                        <option>Subscriber</option>
+                      </select>
+                    </td>
+                    <td>
+                      <a href="javascript:void(0)" class="text-info edit"> <i class="fas fa-edit"></i></iconify-icon>
+                      </a>
+                      <a href="javascript:void(0)" class="text-dark delete ms-2"><i
+                          class="fas fa-eye"></i></iconify-icon></a>
+                    </td>
+
+                  </tr>
+                  <tr>
+                    <td class="ps-4">3</td>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <img src="user-05.jpg" class="rounded  round-50">
+                        <div class="ms-3">
+                          <h6 class=" mb-0">
+                            Olivia Johnson
+                          </h6>
+                          <span class="text-muted">Texas, Unitedd states</span>
                         </div>
-                      </td>
-                      <td>
-                        <span>Visual Designer</span><br>
-                        <span>Past : teacher</span>
-                      </td>
-                      <td>
-                        <span>daniel@website.com</span><br>
-                        <span>999 - 444 - 555</span>
-                      </td>
-                      <td>
-                        <select class="form-select category-select border-0 bg-inverse" id="exampleFormControlSelect1">
-                          <option>Modulator</option>
-                          <option>Admin</option>
-                          <option>User</option>
-                          <option>Subscriber</option>
-                        </select>
-                      </td>
-                      <td>
-                        <a href="javascript:void(0)" class="text-info edit"> <i class="fas fa-edit"></i></iconify-icon>
-                       </a>
-                       <a href="javascript:void(0)" class="text-dark delete ms-2"><i class="fas fa-eye"></i></iconify-icon></a>
-                     </td>  
-                      
-                    </tr>
-                    <tr>
-                      <td class="ps-4">4</td>
-                      <td>
-                        <div class="d-flex align-items-center">
-                          <img src="user-09.jpeg" class="rounded  round-50">
-                          <div class="ms-3">
-                            <h6 class=" mb-0">
-                              Isabella Williams
-                            </h6>
-                            <span class="text-muted">Texas, Unitedd states</span>
-                          </div>
+                      </div>
+                    </td>
+                    <td>
+                      <span>Visual Designer</span><br>
+                      <span>Past : teacher</span>
+                    </td>
+                    <td>
+                      <span>daniel@website.com</span><br>
+                      <span>999 - 444 - 555</span>
+                    </td>
+                    <td>
+                      <select class="form-select category-select border-0 bg-inverse" id="exampleFormControlSelect1">
+                        <option>Modulator</option>
+                        <option>Admin</option>
+                        <option>User</option>
+                        <option>Subscriber</option>
+                      </select>
+                    </td>
+                    <td>
+                      <a href="javascript:void(0)" class="text-info edit"> <i class="fas fa-edit"></i></iconify-icon>
+                      </a>
+                      <a href="javascript:void(0)" class="text-dark delete ms-2"><i
+                          class="fas fa-eye"></i></iconify-icon></a>
+                    </td>
+
+                  </tr>
+                  <tr>
+                    <td class="ps-4">4</td>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <img src="user-09.jpeg" class="rounded  round-50">
+                        <div class="ms-3">
+                          <h6 class=" mb-0">
+                            Isabella Williams
+                          </h6>
+                          <span class="text-muted">Texas, Unitedd states</span>
                         </div>
-                      </td>
-                      <td>
-                        <span>Visual Designer</span><br>
-                        <span>Past : teacher</span>
-                      </td>
-                      <td>
-                        <span>daniel@website.com</span><br>
-                        <span>999 - 444 - 555</span>
-                      </td>
-                      <td>
-                        <select class="form-select category-select border-0 bg-inverse" id="exampleFormControlSelect1">
-                          <option>Modulator</option>
-                          <option>Admin</option>
-                          <option>User</option>
-                          <option>Subscriber</option>
-                        </select>
-                      </td>
-                      <td>
-                         <a href="javascript:void(0)" class="text-info edit"> <i class="fas fa-edit"></i></iconify-icon>
-                        </a>
-                        <a href="javascript:void(0)" class="text-dark delete ms-2"><i class="fas fa-eye"></i></iconify-icon></a>
-                      </td>                   
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+                      </div>
+                    </td>
+                    <td>
+                      <span>Visual Designer</span><br>
+                      <span>Past : teacher</span>
+                    </td>
+                    <td>
+                      <span>daniel@website.com</span><br>
+                      <span>999 - 444 - 555</span>
+                    </td>
+                    <td>
+                      <select class="form-select category-select border-0 bg-inverse" id="exampleFormControlSelect1">
+                        <option>Modulator</option>
+                        <option>Admin</option>
+                        <option>User</option>
+                        <option>Subscriber</option>
+                      </select>
+                    </td>
+                    <td>
+                      <a href="javascript:void(0)" class="text-info edit"> <i class="fas fa-edit"></i></iconify-icon>
+                      </a>
+                      <a href="javascript:void(0)" class="text-dark delete ms-2"><i
+                          class="fas fa-eye"></i></iconify-icon></a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="tab-pane fade" id="delete" aria-labelledby="delete-tab" role="tabpanel">
-        <div>
-          <div class="col-md-12">
-            <div class="">
+        <div class="tab-pane fade" id="delete" aria-labelledby="delete-tab" role="tabpanel">
+          <div>
+            <div class="col-md-12">
+              <div class="">
                 <div class="d-flex align-items-center px-9 py-4">
-                    <h5 class="card-title mb-0">Recent Sales</h5>
-                    <div class="ms-auto">
-                        <select class="form-select border-0 bg-inverse">
-                            <option>March</option>
-                            <option>April</option>
-                            <option>May</option>
-                            <option>June</option>
-                            <option>July</option>
-                        </select>
-                    </div>
+                  <h5 class="card-title mb-0">Recent Sales</h5>
+                  <div class="ms-auto">
+                    <select class="form-select border-0 bg-inverse">
+                      <option>March</option>
+                      <option>April</option>
+                      <option>May</option>
+                      <option>June</option>
+                      <option>July</option>
+                    </select>
+                  </div>
                 </div>
                 <div class="px-9 py-4 bg-inverse">
-                    <div class="d-flex align-items-center ">
-                        <div>
-                            <h2 class="fw-medium">March 2021</h2>
-                            <p class="mb-0 fs-4 text-muted">Sales Report</p>
-                        </div>
-                        <div class="ms-auto">
-                            <h3 class="text-secondary mb-0 fw-medium">$3,690
-                        </h3></div>
+                  <div class="d-flex align-items-center ">
+                    <div>
+                      <h2 class="fw-medium">March 2021</h2>
+                      <p class="mb-0 fs-4 text-muted">Sales Report</p>
                     </div>
+                    <div class="ms-auto">
+                      <h3 class="text-secondary mb-0 fw-medium">$3,690
+                      </h3>
+                    </div>
+                  </div>
                 </div>
                 <div class="p-3">
-                    <div class="table-responsive" data-simplebar="init"><div class="simplebar-wrapper" style="margin: 0px;"><div class="simplebar-height-auto-observer-wrapper"><div class="simplebar-height-auto-observer"></div></div><div class="simplebar-mask"><div class="simplebar-offset" style="right: 0px; bottom: 0px;"><div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: auto; overflow: hidden;"><div class="simplebar-content" style="padding: 0px;">
-                        <table class="table mb-0 text-nowrap no-wrap recent-table table-hover">
-                            <thead>
-                                <tr class="fs-4 fw-semibold">
+                  <div class="table-responsive" data-simplebar="init">
+                    <div class="simplebar-wrapper" style="margin: 0px;">
+                      <div class="simplebar-height-auto-observer-wrapper">
+                        <div class="simplebar-height-auto-observer"></div>
+                      </div>
+                      <div class="simplebar-mask">
+                        <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
+                          <div class="simplebar-content-wrapper" tabindex="0" role="region"
+                            aria-label="scrollable content" style="height: auto; overflow: hidden;">
+                            <div class="simplebar-content" style="padding: 0px;">
+                              <table class="table mb-0 text-nowrap no-wrap recent-table table-hover">
+                                <thead>
+                                  <tr class="fs-4 fw-semibold">
                                     <th class="border-0">#</th>
                                     <th class="border-0">Name</th>
                                     <th class="border-0">Status</th>
                                     <th class="border-0">Date</th>
                                     <th class="border-0 text-end">Price</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
                                     <td>1</td>
                                     <td class="txt-oflo">Elite admin</td>
                                     <td>
-                                        <span class="
+                                      <span class="
                             badge p-2
                             rounded
                             text-capitalize text-secondary 
@@ -680,12 +725,12 @@
                                     </td>
                                     <td class="txt-oflo">April 18, 2021</td>
                                     <td class="text-end"><span class="text-secondary fw-medium ">$24</span></td>
-                                </tr>
-                                <tr>
+                                  </tr>
+                                  <tr>
                                     <td>2</td>
                                     <td class="txt-oflo">Real Homes WP Theme</td>
                                     <td>
-                                        <span class="
+                                      <span class="
                             badge p-2
                             rounded
                             text-capitalize text-info
@@ -696,12 +741,12 @@
                                     </td>
                                     <td class="txt-oflo">April 19, 2021</td>
                                     <td class="text-end"><span class="text-secondary fw-medium">$1250</span></td>
-                                </tr>
-                                <tr>
+                                  </tr>
+                                  <tr>
                                     <td>3</td>
                                     <td class="txt-oflo">Ample Admin</td>
                                     <td>
-                                        <span class="
+                                      <span class="
                             badge p-2
                             rounded
                             text-capitalize text-success
@@ -712,12 +757,12 @@
                                     </td>
                                     <td class="txt-oflo">April 19, 2021</td>
                                     <td class="text-end"><span class="text-success fw-medium">$1250</span></td>
-                                </tr>
-                                <tr>
+                                  </tr>
+                                  <tr>
                                     <td>4</td>
                                     <td class="txt-oflo">Medical Pro WP Theme</td>
                                     <td>
-                                        <span class="
+                                      <span class="
                             badge p-2
                             rounded
                             text-capitalize text-danger
@@ -729,12 +774,12 @@
                                     <td class="txt-oflo">April 20, 2021</td>
                                     <td class="text-end"><span class="text-danger fw-medium">-$24</span>
                                     </td>
-                                </tr>
-                                <tr>
+                                  </tr>
+                                  <tr>
                                     <td>5</td>
                                     <td class="txt-oflo">Hosting press html</td>
                                     <td>
-                                        <span class="
+                                      <span class="
                             badge p-2
                             rounded
                             text-capitalize text-warning
@@ -746,102 +791,132 @@
                                     <td class="txt-oflo">April 21, 2021</td>
                                     <td class="text-end"><span class="text-success fw-medium">$24</span>
                                     </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div></div></div></div><div class="simplebar-placeholder" style="width: 582px; height: 361px;"></div></div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="width: 0px; display: none;"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: hidden;"><div class="simplebar-scrollbar" style="height: 0px; display: none;"></div></div></div>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="simplebar-placeholder" style="width: 582px; height: 361px;"></div>
+                    </div>
+                    <div class="simplebar-track simplebar-horizontal" style="visibility: hidden;">
+                      <div class="simplebar-scrollbar" style="width: 0px; display: none;"></div>
+                    </div>
+                    <div class="simplebar-track simplebar-vertical" style="visibility: hidden;">
+                      <div class="simplebar-scrollbar" style="height: 0px; display: none;"></div>
+                    </div>
+                  </div>
                 </div>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="medicoModal" tabindex="-1" aria-labelledby="medicoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="medicoModalLabel">Selecione um Médico</h5>
+          <div class="d-flex justify-content-end flex-grow-1">
+            <%= link_to home_path, class: 'btn btn-primary btn-sm' do %>
+              <i class="fas fa-eraser"></i> Limpar busca
+            <% end %>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+        <div class="modal-body">
+          <div class="py-2">
+            <ul class="list-style-none chat-list">
+            <% @medicos.each do |medico| %>
+              <li class="mb-4">
+                <a href="javascript:void(0)">
+                  <div href="#" class="select-medico d-flex align-items-center" data-id="<%= medico.id %>">
+                    <img src="user-06.jpg" class="rounded round-50">
+                    <div class="ms-3">
+                      <h6 class="select-medico" href="#" class="select-medico" data-id="<%= medico.id %>"><%= medico.nome %></h6>
+                      <small class="text-success">Online</small>
+                    </div>
+                  </div>
+                </a>
+              </li>
+              <% end %>                        
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+<!-- Modal -->
+<div class="modal fade" id="fichaModal" tabindex="-1" aria-labelledby="fichaModalLabel" aria-hidden="true" data-bs-backdrop="true" data-bs-keyboard="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="fichaModalLabel">Ficha do Paciente</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h5 id="modalPacienteNome"></h5>
+        <p id="modalPacienteFicha"></p>
+        <p id="modalConsultaFicha"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Fechar</button>
       </div>
     </div>
   </div>
 </div>
 
-</div>
 
-  
+<script>
+function openFichaModal(element) {
+  var pacienteNome = element.getAttribute('data-consulta-paciente');
+  var pacienteFicha = element.getAttribute('data-consulta-ficha');
+  var consultaFicha = element.getAttribute('data-consulta-consulta-ficha');
 
+  document.getElementById('modalPacienteNome').innerText = pacienteNome;
+  document.getElementById('modalPacienteFicha').innerText = pacienteFicha;
+  document.getElementById('modalConsultaFicha').innerText = consultaFicha;
 
-        <!-- Modal -->
-        <div class="modal fade" id="medicoModal" tabindex="-1" aria-labelledby="medicoModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="medicoModalLabel">Selecione um Médico</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <hr>
-              <div class="modal-body">
-                <div class="py-2">
-                  <ul class="list-style-none chat-list">
-                  <% @medicos.each do |medico| %>
-                    <li class="mb-4">
-                      <a href="javascript:void(0)">
-                        <div href="#" class="select-medico d-flex align-items-center" data-id="<%= medico.id %>">
-                          <img src="user-06.jpg" class="rounded round-50">
-                          <div class="ms-3">
-                            <h6 class="select-medico" href="#" class="select-medico" data-id="<%= medico.id %>"><%= medico.nome %></h6>
-                            <small class="text-success">Online</small>
-                          </div>
-                        </div>
-                      </a>
-                    </li>
-                    <% end %>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+  var fichaModal = new bootstrap.Modal(document.getElementById('fichaModal'));
+  fichaModal.show();
+}
 
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll(".select-medico").forEach(function (element) {
+    element.addEventListener("click", function (event) {
+      event.preventDefault();
+      var medicoId = this.getAttribute("data-id");
+      var medicoNome = this.textContent;
+      document.getElementById("medico_id_field").value = medicoId;
+      var modal = bootstrap.Modal.getInstance(document.getElementById("medicoModal"));
+      modal.hide();
 
-          <!-- Modal -->
-          <div class="modal fade" id="fichaModal" tabindex="-1" aria-labelledby="fichaModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="fichaModalLabel">Ficha do Paciente</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                  <h5 id="modalPacienteNome"></h5>
-                  <p id="modalPacienteFicha"></p>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Fechar</button>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <script>
-            function openFichaModal(element) {
-              var consultaId = element.getAttribute('data-consulta-id');
-              var pacienteNome = element.getAttribute('data-consulta-paciente');
-              var pacienteFicha = element.getAttribute('data-consulta-ficha');
-          
-              document.getElementById('modalPacienteNome').innerText = pacienteNome;
-              document.getElementById('modalPacienteFicha').innerText = pacienteFicha;
-          
-              var fichaModal = new bootstrap.Modal(document.getElementById('fichaModal'));
-              fichaModal.show();
-            }
+      // Submit the form via AJAX
+      document.getElementById('search_form').submit();
+    });
+  });
 
-          document.addEventListener("DOMContentLoaded", function() {
-            document.querySelectorAll(".select-medico").forEach(function(element) {
-              element.addEventListener("click", function(event) {
-                event.preventDefault();
-                var medicoId = this.getAttribute("data-id");
-                var medicoNome = this.textContent;
-                document.getElementById("medico_id_field").value = medicoId;
-                var modal = bootstrap.Modal.getInstance(document.getElementById("medicoModal"));
-                modal.hide();
-        
-                // Submit the form via AJAX
-                document.getElementById('search_form').submit();
-              });
-            });
-          });
-        </script>
+  // Remover manualmente o backdrop quando o modal é fechado
+  var fichaModalElement = document.getElementById('fichaModal');
+  fichaModalElement.addEventListener('hidden.bs.modal', function () {
+    document.body.classList.remove('modal-open');
+    var modals = document.querySelectorAll('.modal-backdrop');
+    modals.forEach(function (modal) {
+      modal.remove();
+    });
+  });
+});
+
+</script>

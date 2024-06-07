@@ -6,7 +6,8 @@
     "build:css": "postcss src/styles.css -o public/styles.css --watch"
   },
   "devDependencies": {
+    "postcss-cli": "^8.0.0",
     "webpack": "^5.0.0",
-    "postcss-cli": "^8.0.0"
+    "webpack-cli": "^5.1.4"
   }
 }
