@@ -1,51 +1,78 @@
-<h2>Sign up</h2>
-
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
-
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+<div class="position-relative overflow-hidden radial-gradient min-vh-100 w-100 d-flex align-items-center justify-content-center">
+  <div class="d-flex align-items-center justify-content-center w-100">
+    <div class="row justify-content-center w-100">
+      <div class="col-md-10 col-lg-8 col-xxl-4"> 
+        <br>
+        <div class="card mb-0" style="background-color: #FFFFFF;">
+          <div class="card-body p-5">
+            <a  class="text-nowrap logo-img text-center d-block mb-5 w-100">
+              <b class="logo-icon">
+                <img
+                  src="https://img.freepik.com/vetores-gratis/codificacao-e-desenvolvimento-de-sites-suporte-tecnico-engenharia-de-programacao-coder-desenvolvedor-web-software-de-computador-ilustracao-de-conceito-de-personagem-plano-masculino-programador_335657-1740.jpg?t=st=1718048867~exp=1718052467~hmac=6669e7d405762bc2617f5d4f03707e7d8e0d8427735aa29d0460280202964f2e&w=826"
+                  alt="homepage"
+                  width="360"
+                  class="dark-logo"
+                />
+              </b>
+            </a>
+            <div class="position-relative text-center my-4">
+              <p class="mb-0 fs-4 px-3 d-inline-block card text-dark z-3 position-relative border-0 shadow-none">Faça seu Cadastro aqui</p>
+              <span class="border-top border-dark-subtle opacity-25 w-100 position-absolute top-50 start-50 translate-middle"></span>
+            </div>
+            <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+            <%= render "devise/shared/error_messages", resource: resource %>
+            <div class="row">
+              <div class="mb-3 col-md-6">
+                <label for="exampleInputEmail1" class="form-label">Nome</label>
+                <%= f.text_field :nome, class: "form-control" %>
+              </div>
+              <div class="mb-3 col-md-6">
+                <label for="exampleInputEmail1" class="form-label">CPF</label>
+                <%= f.text_field :cpf, class: "form-control" %>
+              </div>
+            </div>
+            <div class="row">
+              <div class="mb-3 col-md-6">
+                <label for="perfil" class="form-label">Perfil</label>
+                <%= f.select :perfil, [['Admin', 'admin'], ['Normal', 'normal']], {}, { class: "form-control" } %>
+              </div>
+              <div class="mb-3 col-md-6">
+                <label for="tipo" class="form-label">Tipo</label>
+                <%= f.select :tipo, [['Secretaria', 'secretaria'], ['Doutor', 'doutor']], {}, { class: "form-control" } %>
+              </div>
+            </div>
+            <div class="row">
+              <div class="mb-3 col-md-12">
+                <label for="exampleInputEmail1" class="form-label">Email</label>
+                <%= f.email_field :email, class: "form-control", autofocus: true, autocomplete: "email" %>
+              </div>
+              <div class="mb-3 col-md-6">
+                <label for="exampleInputPassword1" class="form-label">Senha</label>
+                <% if @minimum_password_length %>
+                  <em>(<%= @minimum_password_length %> characters minimum)</em>
+                <% end %><br />
+                <%= f.password_field :password, autocomplete: "new-password", class: "form-control" %>
+              </div>
+              <div class="mb-3 col-md-6">
+                <label for="exampleInputPassword1" class="form-label">Confirme a senha</label>
+                <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control" %>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <%= f.submit "Salvar", class: "btn btn-success w-100 py-8 mb-4 rounded-2" %>
+                <div class="d-flex align-items-center">
+                  <p class="fs-4 mb-0 text-dark">Já tem uma conta?</p>
+                  <%= link_to "Entrar", new_session_path(resource_name), class: "text-success fw-medium ms-2" %>
+                </div>
+              </div>
+            </div>
+            <% end %>
+          </div>
+        </div>
+        <br>
+      </div>
+    </div>
   </div>
-
-  <div class="field">
-    <%= f.label :password %>
-    <% if @minimum_password_length %>
-    <em>(<%= @minimum_password_length %> characters minimum)</em>
-    <% end %><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :cpf %><br />
-    <%= f.text_field :cpf %>
-  </div>
-
-  <div class="field">
-  <%= f.label :nome %><br />
-  <%= f.text_field :nome %>
 </div>
 
-  <div class="field">
-  <%= f.label :tipo %><br />
-  <%= f.select :tipo, [['Secretaria', 'secretaria'], ['Doutor', 'doutor']] %>
-</div>
-
-<div class="field">
-  <%= f.label :perfil %><br />
-  <%= f.select :perfil, [['Admin', 'admin'], ['Normal', 'normal']] %>
-</div>
-
-
-
-  <div class="actions">
-    <%= f.submit "Sign up" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
