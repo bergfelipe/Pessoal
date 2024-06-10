@@ -1,11 +1,19 @@
 Rails.application.routes.draw do
-   devise_for :admins
-   devise_scope :admin do
-    get '/admins/sign_out_custom', to: 'devise/sessions#destroy', as: :destroy_admin_session_custom
+  devise_for :admins, path: '', path_names: {
+    sign_in: 'login',
+    sign_out: 'logout',
+    sign_up: 'secreto'
+  }
+
+  devise_scope :admin do
+    get 'logout_custom', to: 'devise/sessions#destroy', as: :destroy_admin_session_custom
+    # Aqui você pode adicionar outras rotas customizadas se necessário
   end
+
   resources :pacientes
   resources :consulta
   resources :medicos
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   # config/routes.rb
   get 'home', to: 'home#index'
