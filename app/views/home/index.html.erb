@@ -32,7 +32,11 @@
           </div>
           <div class="col text-center border-end">
             <h3 class="fw-semibold">
+              <% if current_admin.tipo=='doutor' %>
+              <%= @consulta_comp.count %>
+              <%else%>
               <%= @consultas.count %>
+              <%end%>
             </h3>
             <h6 class="text-muted">Consultas</h6>
           </div>
@@ -46,7 +50,8 @@
       <div class="d-flex justify-content-between align-items-center px-9 py-4">
         <div class="d-flex align-items-center">
           <h4 class="card-title mb-0">Consultas do Dia</h4>
-          <span class="mx-2">-</span>
+          <% if current_admin.perfil == 'admin' %>
+          <span class="mx-2">-</span>     
           <div class="form-group mb-0">
             <%= search_form_for @q, url: home_path, remote: true, html: { id: 'search_form' } do |f| %>
               <%= f.hidden_field :medico_id_eq, id: "medico_id_field" %>
@@ -54,6 +59,7 @@
                   class="btn btn-secondary btn-sm">Selecionar Médico <i class="fas fa-user-md"></i></a>
                 <% end %>
           </div>
+          <% end %>
         </div>
         <%= button_to new_consultum_path, method: :get, class: "btn btn-success btn-sm" , data: { bs_toggle: "modal" ,
           bs_target: "#addConsultaModal" } do %>
@@ -76,6 +82,7 @@
                     <% if @consultas.blank? %>
                     <p>Nenhuma consulta a ser exibida</p>
                   <% else %>
+                    <% if params[:q].present? || current_admin.tipo == 'secretaria' %>
                     <% @consultas.each do |f| %>
                       <div class="d-flex gap-9 comment-row mb-5">
                         <span class="flex-shrink-0"><img src="/user-05.jpg" alt="user" width="56" height="56"
@@ -124,6 +131,58 @@
                           </ul>
                         </div>
                       </div>
+                      <% end %>
+                    <% else %>
+                    <% @consulta_comp.each do |f| %>
+                      <div class="d-flex gap-9 comment-row mb-5">
+                        <span class="flex-shrink-0"><img src="/user-05.jpg" alt="user" width="56" height="56"
+                            class="rounded round-50"></span>
+                        <div class="comment-text flex-grow-1">
+                          <div class="hstack justify-content-between gap-6 mb-1">
+                            <div class="d-flex align-items-center gap-6">
+                              <h5 class="mb-0">
+                                <%= f.paciente.nome %>
+                              </h5>
+                              <p class="mb-0 fs-3">daqui a 5 minutos</p>
+                            </div>
+                            <span class="badge bg-success-subtle text-success rounded fw-semibold p-2 ms-auto">
+                              <%= formatar_data_hora_minuto(f.data_consulta) %>
+                            </span>
+                          </div>
+                          <% if f.tipo.nil? %>
+                            <p class="comment-details mb-6 fs-3 text-muted truncate-2 truncate-2">
+                              Nenhuma descrição a ser exibida.
+                            </p>
+                          <% else %>
+                            <p class="comment-details mb-6 fs-3 text-muted truncate-2 truncate-2">
+                              <%= f.tipo %>
+                            </p>
+                          <% end %>
+                          <ul class="list-unstyled mb-0 hstack gap-3 lh-1">
+                            <li data-toggle="tooltip" data-placement="bottom" title="Editar Consulta">
+                              <%= link_to edit_consultum_path(f), class: 'fs-5 text-muted' do %>
+                                <i class="fas fa-edit"></i>
+                              <% end %>
+                            </li>
+                            <li data-toggle="tooltip" data-placement="bottom" title="Ver Consulta">
+                              <%= link_to f, class: 'fs-6 text-muted' do %>
+                                <i class="far fa-calendar-alt"></i>
+                              <% end %>
+                            </li>
+                            <li data-bs-toggle="modal" data-bs-target="#fichaModal" data-toggle="tooltip"
+                              data-placement="bottom" title="Ver Ficha">
+                              <a class="fs-6 text-muted" href="javascript:void(0)" data-consulta-id="<%= f.id %>"
+                                data-consulta-paciente="<%= f.paciente.nome %>"
+                                data-consulta-ficha="<%= f.paciente.ficha %>"
+                                data-consulta-consulta-ficha="<%= f.ficha %>" onclick="openFichaModal(this)">
+                                <i class="fas fa-notes-medical"></i>
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      <% end %>
+
                     <% end %>
                   <% end %>
                   
