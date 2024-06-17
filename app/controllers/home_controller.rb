@@ -1,7 +1,8 @@
 class HomeController < ApplicationController
   def index
     @q = Consultum.ransack(params[:q])
-    @pagy, @consultas = pagy(@q.result(distinct: true).order(data_consulta: :desc))
+    @pagy, @consultas = pagy(@q.result(distinct: true).where('DATE(data_consulta) = ?', Date.current).order(data_consulta: :desc))
+
     @medicos = Medico.all
     @pacientes = Paciente.all
     # Encontre o médico pelo CPF do administrador atual

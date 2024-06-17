@@ -67,7 +67,160 @@
           <% end %>
       </div>
       <div class="card-body">
+        <%  if  current_admin.tipo == 'secretaria'%>
+                    <div>
+                     <% if @consultas.blank? %> 
+                      <span class="badge bg-danger-subtle rounded fw-semibold p-2 absolute top-50 start-50 translate-50-50">
+                        <h5 class="text-danger">Ainda não há nenhuma consulta pra hoje</h5>
+                      </span>
+
+        <% else %>
+        <div class="comment-widgets position-relative mb-2 simplebar-scrollable-y" data-simplebar="init"
+        style="height: 475px">
+        <div class="simplebar-wrapper" style="margin: 0px;">
+          <div class="simplebar-height-auto-observer-wrapper">
+            <div class="simplebar-height-auto-observer"></div>
+          </div>
+          <div class="simplebar-mask">
+            <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
+            
+              <div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content"
+                style="height: 100%; overflow: hidden scroll;">
+                <div class="simplebar-content" style="padding: 0px;">
+                  <% if @consultas.blank? %>
+                  <p>Nenhuma consulta a ser exibida</p>
+                <% else %>
+                  <% if params[:q].present? || current_admin.tipo == 'secretaria' %>
+                  <% @consultas.each do |f| %>
+                  <div class="d-flex gap-9 comment-row mb-5">
+                    <span class="flex-shrink-0">
+                      <%= link_to paciente_path(f.paciente) do %>
+                        <img src="/user-05.jpg" alt="user" width="56" height="56" class="rounded round-50">
+                      <% end %>
+                    </span>
+                    <div class="comment-text flex-grow-1">
+                      <div class="hstack justify-content-between gap-6 mb-1">
+                        <div class="d-flex align-items-center gap-6">
+                          <h5 class="mb-0">
+                            <%= link_to f.paciente.nome, paciente_path(f.paciente) %>
+                          </h5>
+                          <p class="mb-0 fs-3"><%= tempo_restante(f.data_consulta) %></p>
+                        </div>
+                        <span class="badge bg-success-subtle text-success rounded fw-semibold p-2 ms-auto">
+                          <%= formatar_data_hora_minuto(f.data_consulta) %>
+                        </span>
+                      </div>                        
+                      <% if f.tipo.nil? %>
+                        <p class="comment-details mb-6 fs-3 text-muted truncate-2 truncate-2">
+                          Nenhuma descrição a ser exibida.
+                        </p>
+                      <% else %>
+                        <p class="comment-details mb-6 fs-3 text-muted truncate-2 truncate-2">
+                          <%= f.tipo %>
+                        </p>
+                      <% end %>
+                      <ul class="list-unstyled mb-0 hstack gap-3 lh-1">
+                        <li data-toggle="tooltip" data-placement="bottom" title="Editar Consulta">
+                          <%= link_to edit_consultum_path(f), class: 'fs-5 text-muted' do %>
+                            <i class="fas fa-edit"></i>
+                          <% end %>
+                        </li>
+                        <li data-toggle="tooltip" data-placement="bottom" title="Ver Consulta">
+                          <%= link_to f, class: 'fs-6 text-muted' do %>
+                            <i class="far fa-calendar-alt"></i>
+                          <% end %>
+                        </li>
+                        <li data-bs-toggle="modal" data-bs-target="#fichaModal" data-toggle="tooltip"
+                          data-placement="bottom" title="Ver Ficha">
+                          <a class="fs-6 text-muted" href="javascript:void(0)" data-consulta-id="<%= f.id %>"
+                            data-consulta-paciente="<%= f.paciente.nome %>"
+                            data-consulta-ficha="<%= f.paciente.ficha %>"
+                            data-consulta-consulta-ficha="<%= f.ficha %>" onclick="openFichaModal(this)">
+                            <i class="fas fa-notes-medical"></i>
+                          </a>
+                        </li>
+                        <%= link_to medico_path(f.medico), class: 'ms-auto' do %>
+                        <h6 class="mb-0"><i class="fas fa-user-md me-1"></i>Dr.<%= f.medico.nome %></h6>
+                        <% end %>
+                      </ul>
+                    </div>
+                  </div>
+                    <% end %>
+                  <% else %>
+                  <% @consulta_comp.each do |f| %>
+                    <div class="d-flex gap-9 comment-row mb-5">
+                      <span class="flex-shrink-0">
+                        <%= link_to paciente_path(f.paciente) do %>
+                          <img src="/user-05.jpg" alt="user" width="56" height="56" class="rounded round-50">
+                        <% end %>
+                      </span>
+                      <div class="comment-text flex-grow-1">
+                        <div class="hstack justify-content-between gap-6 mb-1">
+                          <div class="d-flex align-items-center gap-6">
+                            <h5 class="mb-0">
+                              <%= link_to f.paciente.nome, paciente_path(f.paciente) %>
+                            </h5> 
+                            <p class="mb-0 fs-3"><%= tempo_restante(f.data_consulta) %></p>
+                          </div>
+                          <span class="badge bg-success-subtle text-success rounded fw-semibold p-2 ms-auto">
+                            <%= formatar_data_hora_minuto(f.data_consulta) %>
+                          </span>
+                        </div>
+                        <% if f.tipo.nil? %>
+                          <p class="comment-details mb-6 fs-3 text-muted truncate-2 truncate-2">
+                            Nenhuma descrição a ser exibida.
+                          </p>
+                        <% else %>
+                          <p class="comment-details mb-6 fs-3 text-muted truncate-2 truncate-2">
+                            <%= f.tipo %>
+                          </p>
+                        <% end %>
+                        <ul class="list-unstyled mb-0 hstack gap-3 lh-1">
+                          <li data-toggle="tooltip" data-placement="bottom" title="Editar Consulta">
+                            <%= link_to edit_consultum_path(f), class: 'fs-5 text-muted' do %>
+                              <i class="fas fa-edit"></i>
+                            <% end %>
+                          </li>
+                          <li data-toggle="tooltip" data-placement="bottom" title="Ver Consulta">
+                            <%= link_to f, class: 'fs-6 text-muted' do %>
+                              <i class="far fa-calendar-alt"></i>
+                            <% end %>
+                          </li>
+                          <li data-bs-toggle="modal" data-bs-target="#fichaModal" data-toggle="tooltip"
+                            data-placement="bottom" title="Ver Ficha">
+                            <a class="fs-6 text-muted" href="javascript:void(0)" data-consulta-id="<%= f.id %>"
+                              data-consulta-paciente="<%= f.paciente.nome %>"
+                              data-consulta-ficha="<%= f.paciente.ficha %>"
+                              data-consulta-consulta-ficha="<%= f.ficha %>" onclick="openFichaModal(this)">
+                              <i class="fas fa-notes-medical"></i>
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <% end %>
+
+                  <% end %>
+                <% end %>
+                
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+        <% end %>
+      </div>
+        <% else %>
         <!-- Lista de consultas -->
+        <% if @consulta_comp.blank? && params[:q].nil? || @consultas.blank?%>
+        <span class="badge bg-danger-subtle rounded fw-semibold p-2 absolute top-50 start-50 translate-50-50">
+          <h5 class="text-danger">Ainda não há nenhuma consulta pra hoje</h5>
+        </span>
+       
+        <% else %>
+                
         <div class="comment-widgets position-relative mb-2 simplebar-scrollable-y" data-simplebar="init"
           style="height: 475px">
           <div class="simplebar-wrapper" style="margin: 0px;">
@@ -76,13 +229,12 @@
             </div>
             <div class="simplebar-mask">
               <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
+              
                 <div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content"
                   style="height: 100%; overflow: hidden scroll;">
                   <div class="simplebar-content" style="padding: 0px;">
-                    <% if @consultas.blank? %>
-                    <p>Nenhuma consulta a ser exibida</p>
-                  <% else %>
-                    <% if params[:q].present? || current_admin.tipo == 'secretaria' %>
+                
+                    <% if params[:q].present?  %>
                     <% @consultas.each do |f| %>
                     <div class="d-flex gap-9 comment-row mb-5">
                       <span class="flex-shrink-0">
@@ -189,15 +341,17 @@
                       </div>
                       <% end %>
 
-                    <% end %>
                   <% end %>
                   
                   </div>
                 </div>
+                
               </div>
             </div>
           </div>
         </div>
+                <% end %>
+                <% end %>
       </div>
       <div class="card-footer text-end" style="background-color: #FFFFFF;">
         <a href="path_to_all_consultations" class="btn btn-primary btn-sm">Todas as Consultas</a>
