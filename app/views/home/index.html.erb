@@ -24,25 +24,38 @@
           </div>
         </div>
         <div class="row mt-4 pt-4">
+          
           <div class="col text-center border-end">
-            <h3 class="fw-semibold">
-              <%= @pacientes.count %>
-            </h3>
-            <h6 class="text-muted">Pacientes</h6>
+              <a href="pacientes">
+                <img src="https://cdn-icons-png.flaticon.com/256/3034/3034882.png" width="70" height="70" class="mb-6 mx-auto" alt="">
+                <h4 class="fw-semibold text-success mb-1">Pacientes</h4>
+                <h4 class="fw-semibold text-success mb-0"> <%= @pacientes.count %></h4>
+              </a>
           </div>
           <div class="col text-center border-end">
-            <h3 class="fw-semibold">
-              <% if current_admin.tipo=='doutor' %>
-              <%= @consulta_comp.count %>
-              <%else%>
-              <%= @consultas.count %>
-              <%end%>
-            </h3>
-            <h6 class="text-muted">Consultas</h6>
+            <a href="consulta">
+              <img src="https://static.vecteezy.com/ti/vetor-gratis/p3/2566016-icone-de-consulta-medica-vetor.jpg" width="70" height="70" class="mb-6 mx-auto" alt="">
+              <h4 class="fw-semibold text-success mb-1">Consultas</h4>
+              <h4 class="fw-semibold text-success mb-0">  <% if current_admin.tipo=='doutor' %>
+                <%= @consulta_comp.count %>
+                <%else%>
+                <%= @consultas.count %>
+                <%end%></h4>
+            </a>
           </div>
+          <% if current_admin.tipo=='secretaria' %>
+          <div class="col text-center border-end">
+            <a href="medicos">
+              <img src="https://cdn-icons-png.flaticon.com/512/3952/3952988.png" width="70" height="70" class="mb-6 mx-auto" alt="">
+              <h4 class="fw-semibold text-success mb-1">Médicos</h4>
+              <h4 class="fw-semibold text-success mb-0"> <%= @medicos.count %></h4>
+            </a>
+          </div>
+          <%else%>
           <div class="col text-center">
             <button class="btn btn-primary" type="submit">Ver Perfil</button>
           </div>
+          <%end%>
         </div>
       </div>
     </div>
@@ -354,7 +367,7 @@
                 <% end %>
       </div>
       <div class="card-footer text-end" style="background-color: #FFFFFF;">
-        <a href="path_to_all_consultations" class="btn btn-primary btn-sm">Todas as Consultas</a>
+        <a href="consulta" class="btn btn-primary btn-sm"><i class="fas fa-calendar-plus me-1"></i> Todas as Consultas</a>
       </div>
     </div>
 

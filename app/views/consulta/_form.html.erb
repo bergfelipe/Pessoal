@@ -1,46 +1,82 @@
-<%= form_with(model: consultum) do |form| %>
-  <% if consultum.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(consultum.errors.count, "error") %> prohibited this consultum from being saved:</h2>
 
-      <ul>
-        <% consultum.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+    <div class="row justify-content-center w-100">
+      <div class="col-md-10 col-lg-8 col-xxl-4"> 
+        <br>
+        <div class="card mb-0" style="background-color: #FFFFFF;">
+          <a href="<%= request.referer %>" class="btn btn-link position-absolute start-0 top-0 m-3">
+            <i class="fas fa-arrow-left"></i>
+          </a>
+          <div class="card-body p-5">
+            <a  class="text-nowrap logo-img text-center d-block mb-5 w-100">
+              <b class="logo-icon">
+                <img
+                  src="https://img.freepik.com/vetores-gratis/ilustracao-do-conceito-de-enfermeira_114360-14948.jpg?t=st=1718662459~exp=1718666059~hmac=5667566d70674c40b4c38d2567f43d273a51e44abac78a8a9b056791fc2a6416&w=826"
+                  alt="homepage"
+                  width="390"
+                  class="dark-logo"
+                />
+              </b>
+            </a>
+            <div class="position-relative text-center my-4">
+              
+              <p class="mb-0 fs-4 px-3 d-inline-block card text-dark z-3 position-relative border-0 shadow-none">
+                <% if action_name == 'new' %>
+                Nova Consulta
+                <% else %>
+                Editar Consulta
+                <% end %>
+              </p>
+            
 
-<div class="card">
-  <div class="card-body">
-                    <div class="row">
-                      <div class="col-md-4 mb-3">
-                        <label class="form-label" for="validationServer01">Médico</label>
-                        <%= form.collection_select :medico_id, @medicos, :id, :nome, { prompt: "Selecione um Médico" }, { class: 'form-control', required:  'true'} %>
-                      </div>
-                      <div class="col-md-4 mb-3">
-                        <label class="form-label" for="validationServer01">Paciente</label>
-                        <%= form.collection_select :paciente_id, @pacientes, :id, :nome, { prompt: "Selecione um Paciente" }, { class: 'form-control', required:  'true'} %>
-                      </div>
-                      <div class="col-md-4 mb-3">
-                        <label class="form-label" for="validationServer01">Tipo</label>
-                        <%= form.text_field :tipo, class: 'form-control', required:  'true' %>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-6 mb-3">
-                        <label class="form-label" for="validationServer01">Ficha</label>
-                        <%= form.text_area :ficha, class: 'form-control', required:  'true' %>
-                      </div>
-                      <div class="col-md-6 mb-3">
-                        <label class="form-label" for="validationServer01">Data e hora da consulta</label>
-                        <%= form.datetime_field :data_consulta,  { class: 'form-control', required:  'true'} %>
-                      </div>
-                    </div>
-                    <button class="btn btn-success" type="submit">
-                      Salvar
-                    </button>
+              <span class="border-top border-dark-subtle opacity-25 w-100 position-absolute top-50 start-50 translate-middle"></span>
+            </div>
+            <%= form_with(model: consultum) do |form| %>
+              <% if consultum.errors.any? %>
+                <div style="color: red">
+                  <h2><%= pluralize(consultum.errors.count, "error") %> prohibited this consultum from being saved:</h2>
+
+                  <ul>
+                    <% consultum.errors.each do |error| %>
+                      <li><%= error.full_message %></li>
+                    <% end %>
+                  </ul>
                 </div>
+              <% end %>
+            <div class="row">
+              <div class="mb-3 col-md-6">
+                <label for="exampleInputEmail1" class="form-label">Medico</label>
+                <%= form.collection_select :medico_id, @medicos, :id, :nome, { prompt: "Selecione um Médico" }, { class: 'form-control', required:  'true'} %>
+              </div>
+              <div class="mb-3 col-md-6">
+                <label for="exampleInputEmail1" class="form-label">Paciente</label>
+                <%= form.collection_select :paciente_id, @pacientes, :id, :nome, { prompt: "Selecione um Paciente" }, { class: 'form-control', required:  'true'} %>
+              </div>
+            </div>
+            <div class="row">
+              <div class="mb-3 col-md-6">
+                <label for="perfil" class="form-label">Tipo</label>
+                <%= form.text_field :tipo, class: 'form-control', required:  'true' %>
+              </div>
+              <div class="mb-3 col-md-6">
+                <label for="exampleInputEmail1" class="form-label">Data da Consulta</label>
+                <%= form.datetime_field :data_consulta,  { class: 'form-control', required:  'true'} %>
+              </div>
+            </div>
+            <div class="row">
+              <div class="mb-3 col-md-12">
+                <label for="tipo" class="form-label">Ficha</label>
+                <%= form.text_area :ficha, class: 'form-control', required:  'true' %>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <%= form.submit "Salvar", class: "btn btn-success w-100 py-8 mb-4 rounded-2" %>
+              </div>
+            </div>
+            <% end %>
+          </div>
+        </div>
+        <br>
+      </div>
     </div>
-  </div>
-<% end %>
+
