@@ -1,11 +1,11 @@
 
-    <div class="row justify-content-center w-100">
-      <div class="col-md-10 col-lg-8 col-xxl-4"> 
+    <div class="row justify-content-center w-100" style="margin-top: -31px;">
+      <div class="col-md-10 col-lg-8 col-xxl-5"> 
         <br>
         <div class="card mb-0" style="background-color: #FFFFFF;">
-          <a href="<%= request.referer %>" class="btn btn-link position-absolute start-0 top-0 m-3">
+          <a id="back-button" href="<%= session[:referer] %>" class="btn btn-link position-absolute start-0 top-0 m-3" style="font-size: 1.25rem; padding: 0.75rem 1.25rem;">
             <i class="fas fa-arrow-left"></i>
-          </a>
+          </a>          
           <div class="card-body p-5">
             <a  class="text-nowrap logo-img text-center d-block mb-5 w-100">
               <b class="logo-icon">
@@ -70,6 +70,7 @@
             </div>
             <div class="row">
               <div class="col-md-12">
+                <%= form.hidden_field :return_to, value: request.referer %>
                 <%= form.submit "Salvar", class: "btn btn-success w-100 py-8 mb-4 rounded-2" %>
               </div>
             </div>
@@ -80,3 +81,25 @@
       </div>
     </div>
 
+ <script>
+  document.addEventListener("turbo:load", () => {
+  const form = document.querySelector("form");
+
+  if (form) {
+    form.addEventListener("ajax:success", (event) => {
+      const [data, status, xhr] = event.detail;
+
+      if (data.status === "ok") {
+        const backButton = document.getElementById("back-button");
+        backButton.style.display = "block";
+        backButton.href = data.return_to;
+      }
+    });
+
+    form.addEventListener("ajax:error", (event) => {
+      // Tratamento de erro se necessário
+    });
+  }
+});
+
+ </script>

@@ -2,7 +2,7 @@
   <div class="col-lg-4">
     <div class="card">
       <div class="card-body">
-        <div class="ms-auto" style="width: 4em;
+        <div class="ms-auto" style="width: 2em;
         margin-bottom: -28px;">
           <%= link_to edit_admin_registration_path, class: 'ms-3' do %>
             <i class="fas fa-cog"></i> 
@@ -50,7 +50,7 @@
             </a>
           </div>
           <% if current_admin.tipo=='secretaria' %>
-          <div class="col text-center border-end">
+          <div class="col text-center">
             <a href="medicos">
               <img src="https://cdn-icons-png.flaticon.com/512/3952/3952988.png" width="70" height="70" class="mb-6 mx-auto" alt="">
               <h4 class="fw-semibold text-success mb-1">Médicos</h4>
@@ -68,18 +68,31 @@
     <div class="card">
       <div class="d-flex justify-content-between align-items-center px-9 py-4">
         <div class="d-flex align-items-center">
-          <h4 class="card-title mb-0">Consultas do Dia</h4>
-          <% if current_admin.perfil == 'admin' %>
-          <span class="mx-2">-</span>     
-          <div class="form-group mb-0">
-            <%= search_form_for @q, url: home_path, remote: true, html: { id: 'search_form' } do |f| %>
-              <%= f.hidden_field :medico_id_eq, id: "medico_id_field" %>
-                <a href="#" data-bs-toggle="modal" data-bs-target="#medicoModal"
-                  class="btn btn-secondary btn-sm">Selecionar Médico <i class="fas fa-user-md"></i></a>
-                <% end %>
-          </div>
+          <%= search_form_for @q, url: home_path, remote: true, html: { id: 'search_form', class: 'd-flex flex-column flex-md-row align-items-center w-100' } do |f| %>
+            <div class="d-flex align-items-center">
+              <%= f.hidden_field :s %>
+              <% current_order = params.dig(:q, :s) %>
+            <% if current_order == 'created_at desc' %>
+              <%= f.hidden_field :s, value: 'data_consulta asc' %>
+            <% else %>
+              <%= f.hidden_field :s, value: 'created_at desc' %>
+            <% end %>
+            <button type="submit" data-toggle="tooltip" data-placement="bottom" title="Reordenar Lista" class="btn btn-link btn-lg me-3" id="reorder-button"><i class="fas fa-exchange-alt me-1"></i></button>
+              <h4 class="card-title mb-0">Consultas do Dia</h4>
+            </div>
+        
+            <% if current_admin.perfil == 'admin' %>
+              <span class="mx-2">-</span>     
+              <div class="form-group mb-0 ms-md-auto">
+                <%= f.hidden_field :medico_id_eq, id: "medico_id_field" %>
+                <a href="#" data-bs-toggle="modal" data-bs-target="#medicoModal" class="btn btn-secondary btn-sm">
+                  Selecionar Médico <i class="fas fa-user-md"></i>
+                </a>
+              </div>
+            <% end %>
           <% end %>
         </div>
+        
         <%= button_to new_consultum_path, method: :get, class: "btn btn-success btn-sm" , data: { bs_toggle: "modal" ,
           bs_target: "#addConsultaModal" } do %>
           <i class="fas fa-plus-circle"></i> Nova Consulta
@@ -1156,5 +1169,17 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
+document.addEventListener("DOMContentLoaded", function() {
+    const reorderButton = document.getElementById("reorder-button");
+    const hiddenField = document.querySelector('input[name="q[s]"]');
 
+    reorderButton.addEventListener("click", function() {
+      if (hiddenField.value === 'created_at desc') {
+        hiddenField.value = 'data_consulta asc';
+      } else {
+        hiddenField.value = 'created_at desc';
+      }
+      document.getElementById('search_form').submit();
+    });
+  });
 </script>

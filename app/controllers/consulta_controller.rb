@@ -1,5 +1,8 @@
 class ConsultaController < ApplicationController
   before_action :set_consultum, only: %i[ show edit update destroy ]
+  before_action :store_referer, only: [:new, :edit]
+
+
 
   # GET /consulta or /consulta.json
   def index
@@ -30,10 +33,11 @@ class ConsultaController < ApplicationController
   # POST /consulta or /consulta.json
   def create
     @consultum = Consultum.new(consultum_params)
-
+  
     respond_to do |format|
       if @consultum.save
-        format.html { redirect_to consultum_url(@consultum), notice: "Consultum was successfully created." }
+        referer_url = session.delete(:referer) || consultum_url(@consultum)
+        format.html { redirect_to referer_url, notice: "Consultum was successfully created." }
         format.json { render :show, status: :created, location: @consultum }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -41,12 +45,15 @@ class ConsultaController < ApplicationController
       end
     end
   end
+  
+  
 
   # PATCH/PUT /consulta/1 or /consulta/1.json
   def update
     respond_to do |format|
       if @consultum.update(consultum_params)
-        format.html { redirect_to consultum_url(@consultum), notice: "Consultum was successfully updated." }
+        referer_url = session.delete(:referer) || consultum_url(@consultum)
+        format.html { redirect_to referer_url, notice: "Consultum was successfully updated." }
         format.json { render :show, status: :ok, location: @consultum }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -54,6 +61,9 @@ class ConsultaController < ApplicationController
       end
     end
   end
+  
+  
+  
 
   # DELETE /consulta/1 or /consulta/1.json
   def destroy
@@ -66,6 +76,10 @@ class ConsultaController < ApplicationController
   end
 
   private
+
+    def store_referer
+      session[:referer] = request.referer
+    end
     # Use callbacks to share common setup or constraints between actions.
     def set_consultum
       @consultum = Consultum.find(params[:id])
