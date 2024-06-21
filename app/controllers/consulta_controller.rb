@@ -6,10 +6,21 @@ class ConsultaController < ApplicationController
 
   # GET /consulta or /consulta.json
   def index
-    @consulta = Consultum.all
+    @q = Consultum.ransack(params[:q])
+    @q.sorts = 'data_consulta desc' if @q.sorts.empty?  # Ordenação padrão se não especificada
+  
+    # Aplicar os filtros permitidos
+    consulta_params = params[:q]&.permit(:data_consulta_gteq, :data_consulta_lteq, :s, :paciente_nome_cont, :medico_nome_cont)
+  
+    @pagy, @consultas = pagy(@q.result(distinct: true).where(consulta_params))
+  
     @pacientes = Paciente.all
     @medicos = Medico.all
   end
+  
+  
+  
+  
 
   # GET /consulta/1 or /consulta/1.json
   def show

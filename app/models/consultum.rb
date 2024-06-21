@@ -11,7 +11,8 @@ class Consultum < ApplicationRecord
   def self.ransackable_attributes(auth_object = nil)
     ["created_at", "data_consulta", "ficha", "id", "id_value", "medico_id", "paciente_id", "tipo", "updated_at"]
   end
-
+  
+  
   def self.ransackable_associations(auth_object = nil)
     ["medico", "paciente"]
   end

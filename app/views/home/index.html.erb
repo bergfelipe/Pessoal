@@ -49,7 +49,7 @@
                 <%end%></h4>
             </a>
           </div>
-          <% if current_admin.tipo=='secretaria' %>
+          <% if current_admin.tipo=='secretaria' || current_admin.perfil=='admin'%>
           <div class="col text-center">
             <a href="medicos">
               <img src="https://cdn-icons-png.flaticon.com/512/3952/3952988.png" width="70" height="70" class="mb-6 mx-auto" alt="">
