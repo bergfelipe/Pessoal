@@ -16,6 +16,7 @@
       <i class="fas fa-plus-circle me-2"></i> Nova Consulta
     <% end %>
   </div>
+  <%= search_form_for @q, url: consulta_path, method: :get, html: { id: 'search_form' } do |f| %>
       <ul class="list-group" style="height: calc(100vh - 400px)" data-simplebar="init"><div class="simplebar-wrapper" style="margin: 0px;"><div class="simplebar-height-auto-observer-wrapper"><div class="simplebar-height-auto-observer"></div></div><div class="simplebar-mask"><div class="simplebar-offset" style="right: 0px; bottom: 0px;"><div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: 100%; overflow: hidden;"><div class="simplebar-content" style="padding: 0px;">
         <li class="list-group-item border-0 p-0 mx-9">
           <a class="d-flex align-items-center gap-6 list-group-item-action text-dark px-3 py-8 mb-1 rounded-1" href="javascript:void(0)">
@@ -36,8 +37,11 @@
         <li class="border-bottom my-3"></li>
         <li class="fw-semibold text-dark text-uppercase mx-9 my-2 px-3 fs-2">FILTRAR POR</li>
         <li class="list-group-item border-0 p-0 mx-9">
-          <a class="d-flex align-items-center gap-6 list-group-item-action text-dark px-3 py-8 mb-1 rounded-1" href="javascript:void(0)">
-            <i class="ti ti-bookmark fs-5 text-primary"></i>Médico</a>
+            <%= f.hidden_field :medico_id_eq, id: "medico_id_field" %>
+            <a href="#" data-bs-toggle="modal" data-bs-target="#medicoModal" class="d-flex align-items-center gap-6 list-group-item-action text-dark px-3 py-8 mb-1 rounded-1">
+              <img src="https://cdn-icons-png.flaticon.com/128/3762/3762767.png" width="40" height="40" class="mb-6 mx-auto" alt="">
+              <h6>Médico</h6> 
+            </a>
         </li>
         <li class="list-group-item border-0 p-0 mx-9">
           <a class="d-flex align-items-center gap-6 list-group-item-action text-dark px-3 py-8 mb-1 rounded-1" href="javascript:void(0)">
@@ -49,12 +53,50 @@
         </li>
       </div></div></div></div><div class="simplebar-placeholder" style="width: 228px; height: 370px;"></div></div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="width: 0px; display: none;"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: hidden;"><div class="simplebar-scrollbar" style="height: 0px; display: none;"></div></div></ul>
     </div>
+
+
+    <!-- Modalmedico -->
+  <div class="modal fade" id="medicoModal" tabindex="-1" aria-labelledby="medicoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="medicoModalLabel">Selecione um Médico</h5>
+          <div class="d-flex justify-content-end flex-grow-1">
+            <%= link_to home_path, class: 'btn btn-primary btn-sm' do %>
+              <i class="fas fa-eraser"></i> Limpar busca
+            <% end %>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="py-2">
+            <ul class="list-style-none chat-list">
+            <% @medicos.each do |medico| %>
+              <li class="mb-4">
+                <a href="javascript:void(0)">
+                  <div href="#" class="select-medico d-flex align-items-center" data-id="<%= medico.id %>">
+                    <img src="user-06.jpg" class="rounded round-50">
+                    <div class="ms-3">
+                      <h6 class="select-medico" href="#" class="select-medico" data-id="<%= medico.id %>"><%= medico.nome %></h6>
+                      <small class="text-success">Online</small>
+                    </div>
+                  </div>
+                </a>
+              </li>
+              <% end %>                        
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal -->
+
     <div class="d-flex w-100">
       <div class="min-width-493">
         <div class="border-end user-chat-box h-100">
           <div class="px-4 pt-9 pb-6 d-none d-lg-block">
             <h4 class="card-title">Área de Busca</h4>
-            <%= search_form_for @q, url: consulta_path, method: :get do |f| %>
             <div class="row">
               <div class="col-5">
                 <label for="q_data_consulta_gteq">Data da Consulta (De)</label>
@@ -320,3 +362,57 @@
     </div>
   </div>
 </div>
+
+<script>
+  function openFichaModal(element) {
+    var pacienteNome = element.getAttribute('data-consulta-paciente');
+    var pacienteFicha = element.getAttribute('data-consulta-ficha');
+    var consultaFicha = element.getAttribute('data-consulta-consulta-ficha');
+  
+    document.getElementById('modalPacienteNome').innerText = pacienteNome;
+    document.getElementById('modalPacienteFicha').innerText = pacienteFicha;
+    document.getElementById('modalConsultaFicha').innerText = consultaFicha;
+  
+    var fichaModal = new bootstrap.Modal(document.getElementById('fichaModal'));
+    fichaModal.show();
+  }
+  
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".select-medico").forEach(function (element) {
+      element.addEventListener("click", function (event) {
+        event.preventDefault();
+        var medicoId = this.getAttribute("data-id");
+        var medicoNome = this.textContent;
+        document.getElementById("medico_id_field").value = medicoId;
+        var modal = bootstrap.Modal.getInstance(document.getElementById("medicoModal"));
+        modal.hide();
+  
+        // Submit the form via AJAX
+        document.getElementById('search_form').submit();
+      });
+    });
+  
+    // Remover manualmente o backdrop quando o modal é fechado
+    var fichaModalElement = document.getElementById('fichaModal');
+    fichaModalElement.addEventListener('hidden.bs.modal', function () {
+      document.body.classList.remove('modal-open');
+      var modals = document.querySelectorAll('.modal-backdrop');
+      modals.forEach(function (modal) {
+        modal.remove();
+      });
+    });
+  });
+  document.addEventListener("DOMContentLoaded", function() {
+      const reorderButton = document.getElementById("reorder-button");
+      const hiddenField = document.querySelector('input[name="q[s]"]');
+  
+      reorderButton.addEventListener("click", function() {
+        if (hiddenField.value === 'created_at desc') {
+          hiddenField.value = 'data_consulta asc';
+        } else {
+          hiddenField.value = 'created_at desc';
+        }
+        document.getElementById('search_form').submit();
+      });
+    });
+  </script>
