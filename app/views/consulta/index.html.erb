@@ -54,23 +54,24 @@
         <div class="border-end user-chat-box h-100">
           <div class="px-4 pt-9 pb-6 d-none d-lg-block">
             <h4 class="card-title">Área de Busca</h4>
-            <%= search_form_for @q, url: consulta_path do |f| %>
-              <div class="row">
-                <div class="col-5">
-                  <label for="q_data_consulta_gteq">Data da Consulta (De)</label>
-                  <%= f.date_field :data_consulta_gteq, class: "form-control" %>
-                </div>
-                <div class="col-5">
-                  <label for="q_data_consulta_lteq">Data da Consulta (Até)</label>
-                  <%= f.date_field :data_consulta_lteq, class: "form-control" %>
-                </div>
-                <div class="col-2">
-                  <%= button_tag(type: 'submit', class: 'btn btn-primary mt-4') do %>
-                  <i class="fas fa-search"></i> <!-- Adicione o ícone de busca aqui (Bootstrap Icons) -->
-                  <% end %>
-                </div>
+            <%= search_form_for @q, url: consulta_path, method: :get do |f| %>
+            <div class="row">
+              <div class="col-5">
+                <label for="q_data_consulta_gteq">Data da Consulta (De)</label>
+                <%= f.date_field :data_consulta_gteq, class: "form-control" %>
               </div>
-            <% end %>
+              <div class="col-5">
+                <label for="q_data_consulta_lteq">Data da Consulta (Até)</label>
+                <%= f.date_field :data_consulta_lteq, class: "form-control" %>
+              </div>
+              <div class="col-2">
+                <%= button_tag(type: 'submit', class: 'btn btn-primary mt-4') do %>
+                  <i class="fas fa-search"></i> <!-- Adicione o ícone de busca aqui (Bootstrap Icons) -->
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+          
 
           
           
@@ -130,6 +131,7 @@
                     <!-- Linha vertical -->
                     <div class="vertical-line"></div>
                   </div>
+                  
                 <% end %>
                 
                 
