@@ -29,24 +29,30 @@
       <i class="fas fa-plus-circle me-2"></i> Nova Consulta
     <% end %>
   </div>
-  <%= search_form_for @q, url: consulta_path, method: :get, html: { id: 'search_form' } do |f| %>
+
       <ul class="list-group" style="height: calc(100vh - 400px)" data-simplebar="init"><div class="simplebar-wrapper" style="margin: 0px;"><div class="simplebar-height-auto-observer-wrapper"><div class="simplebar-height-auto-observer"></div></div><div class="simplebar-mask"><div class="simplebar-offset" style="right: 0px; bottom: 0px;"><div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: 100%; overflow: hidden;"><div class="simplebar-content" style="padding: 0px;">
+
         <li class="list-group-item border-0 p-0 mx-9">
-          <a class="d-flex align-items-center gap-6 list-group-item-action text-dark px-3 py-8 mb-1 rounded-1" href="javascript:void(0)">
-            <i class="ti ti-star"></i>Favoritas</a>
+          <%= link_to consulta_path(q: { status_eq: Consultum.statuses[:ativa] }), class: 'd-flex align-items-center gap-6 list-group-item-action text-dark px-3 py-8 mb-1 rounded-1' do %>
+            <i class="ti ti-calendar fs-5"></i>Consultas Ativas
+          <% end %>
         </li>
         <li class="list-group-item border-0 p-0 mx-9">
-          <a class="d-flex align-items-center gap-6 list-group-item-action text-dark px-3 py-8 mb-1 rounded-1" href="javascript:void(0)">
-            <i class="ti ti-calendar fs-5"></i>Consultas Ativas</a>
+          <%= link_to consulta_path(q: { status_eq: Consultum.statuses[:concluida] }), class: 'd-flex align-items-center gap-6 list-group-item-action text-dark px-3 py-8 mb-1 rounded-1' do %>
+            <i class="ti ti-calendar-check fs-5"></i>Consultas Concluídas
+          <% end %>
         </li>
         <li class="list-group-item border-0 p-0 mx-9">
-          <a class="d-flex align-items-center gap-6 list-group-item-action text-dark px-3 py-8 mb-1 rounded-1" href="javascript:void(0)">
-            <i class="ti ti-file-text fs-5"></i>Consultas Pendentes </a>
+          <%= link_to consulta_path(q: { status_eq: Consultum.statuses[:fechada] }), class: 'd-flex align-items-center gap-6 list-group-item-action text-dark px-3 py-8 mb-1 rounded-1' do %>
+            <i class="ti ti-alert-circle"></i>Consultas Fechadas
+          <% end %>
         </li>
         <li class="list-group-item border-0 p-0 mx-9">
-          <a class="d-flex align-items-center gap-6 list-group-item-action text-dark px-3 py-8 mb-1 rounded-1" href="javascript:void(0)">
-            <i class="ti ti-alert-circle"></i>Consultas Fechadas</a>
+          <%= link_to consulta_path(q: { status_eq: Consultum.statuses[:apagada] }), class: 'd-flex align-items-center gap-6 list-group-item-action text-dark px-3 py-8 mb-1 rounded-1' do %>
+            <i class="ti ti-star"></i>Favoritas
+          <% end %>
         </li>
+          <%= search_form_for @q, url: consulta_path, method: :get, html: { id: 'search_form' } do |f| %>
         <li class="border-bottom my-3"></li>
         <li class="fw-semibold text-dark text-uppercase mx-9 my-2 px-3 fs-2">FILTRAR POR</li>
         <ul class="d-flex align-items-center">
@@ -69,7 +75,6 @@
         
       </div></div></div></div><div class="simplebar-placeholder" style="width: 228px; height: 370px;"></div></div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="width: 0px; display: none;"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: hidden;"><div class="simplebar-scrollbar" style="height: 0px; display: none;"></div></div></ul>
     </div>
-
 
 
      <!-- Modalmedico -->
@@ -229,84 +234,7 @@
                   </div>
                   
                 <% end %>
-                
-                
-                <style>
-                  .comment-row {
-                    display: flex !important;
-                    align-items: flex-start !important;
-                    gap: 1rem !important;
-                    position: relative !important;
-                  }
-                
-                  .comment-text {
-                    display: flex !important;
-                    flex-direction: column !important;
-                    width: 100% !important;
-                    position: relative !important;
-                  }
-                
-                  .d-flex {
-                    display: flex !important;
-                    align-items: center !important;
-                  }
-                
-                  .gap-3 {
-                    gap: 1rem !important;
-                  }
-                
-                  .mb-1 {
-                    margin-bottom: 0.25rem !important;
-                  }
-                
-                  .mb-5 {
-                    margin-bottom: 1.25rem !important;
-                  }
-                
-                  .align-items-center {
-                    align-items: center !important;
-                  }
-                
-                  .justify-content-between {
-                    justify-content: space-between !important;
-                  }
-                
-                  .badge {
-                    display: inline-block !important;
-                    vertical-align: middle !important;
-                  }
-                
-                  .truncate-2 {
-                    display: -webkit-box !important;
-                    -webkit-line-clamp: 2 !important;
-                    -webkit-box-orient: vertical !important;
-                    overflow: hidden !important;
-                  }
-                
-                  .me-1 {
-                    margin-right: 0.25rem !important;
-                  }
-                
-                  .vertical-line {
-                       position: absolute !important;
-                        left: 50% !important;
-                        top: 0 !important;
-                        bottom: -25px !important;
-                        border-left: 2px solid #ccc !important;
-                        transform: translateX(-50%) !important;
-                        z-index: -1 !important;
-                  }
-                
-                  .date-center {
-                       position: absolute !important;
-                      left: 28% !important;
-                      transform: translateX(-50%) !important;
-                      white-space: nowrap !important;
-                  }
-                </style>
-                
-                
-                
+  
                     
                 </div></div></div></div><div class="simplebar-placeholder" style="width: 512px; height: 624px;"></div></div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="width: 0px; display: none;"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: visible;"><div class="simplebar-scrollbar" style="height: 361px; transform: translate3d(0px, 0px, 0px); display: block;"></div></div></div>
               </div>
@@ -486,3 +414,80 @@
     });
   });
 </script>
+              
+                
+<style>
+  .comment-row {
+    display: flex !important;
+    align-items: flex-start !important;
+    gap: 1rem !important;
+    position: relative !important;
+  }
+
+  .comment-text {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    position: relative !important;
+  }
+
+  .d-flex {
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  .gap-3 {
+    gap: 1rem !important;
+  }
+
+  .mb-1 {
+    margin-bottom: 0.25rem !important;
+  }
+
+  .mb-5 {
+    margin-bottom: 1.25rem !important;
+  }
+
+  .align-items-center {
+    align-items: center !important;
+  }
+
+  .justify-content-between {
+    justify-content: space-between !important;
+  }
+
+  .badge {
+    display: inline-block !important;
+    vertical-align: middle !important;
+  }
+
+  .truncate-2 {
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+  }
+
+  .me-1 {
+    margin-right: 0.25rem !important;
+  }
+
+  .vertical-line {
+       position: absolute !important;
+        left: 50% !important;
+        top: 0 !important;
+        bottom: -25px !important;
+        border-left: 2px solid #ccc !important;
+        transform: translateX(-50%) !important;
+        z-index: -1 !important;
+  }
+
+  .date-center {
+       position: absolute !important;
+      left: 28% !important;
+      transform: translateX(-50%) !important;
+      white-space: nowrap !important;
+  }
+</style>
+
+

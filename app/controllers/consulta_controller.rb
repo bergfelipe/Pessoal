@@ -7,18 +7,10 @@ class ConsultaController < ApplicationController
   # GET /consulta or /consulta.json
   def index
     @q = Consultum.ransack(params[:q])
-    @q.sorts = 'data_consulta desc' if @q.sorts.empty?
-  
-    @pagy, @consultas = pagy(@q.result(distinct: true))
-    
+    @pagy, @consultas = pagy(@q.result(distinct: true).order(data_consulta: :desc))
     @pacientes = Paciente.all
     @medicos = Medico.all
   end
-  
-  
-  
-  
-  
   
 
   # GET /consulta/1 or /consulta/1.json
@@ -97,6 +89,6 @@ class ConsultaController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def consultum_params
-      params.require(:consultum).permit(:medico_id, :paciente_id, :data_consulta, :ficha, :tipo)
+      params.require(:consultum).permit(:medico_id, :paciente_id, :data_consulta, :ficha, :tipo, :favorito, :status)
     end
 end

@@ -43,14 +43,17 @@
                 </div>
               <% end %>
             <div class="row">
-              <div class="mb-3 col-md-6">
+              <div class="mb-3 col-md-4">
                 <label for="exampleInputEmail1" class="form-label">Medico</label>
                 <%= form.collection_select :medico_id, @medicos, :id, :nome, { prompt: "Selecione um Médico" }, { class: 'form-control', required:  'true'} %>
               </div>
-              <div class="mb-3 col-md-6">
+              <div class="mb-3 col-md-4">
                 <label for="exampleInputEmail1" class="form-label">Paciente</label>
                 <%= form.collection_select :paciente_id, @pacientes, :id, :nome, { prompt: "Selecione um Paciente" }, { class: 'form-control', required:  'true'} %>
               </div>
+              <div class="mb-3 col-md-4">
+                <label for="exampleInputEmail1" class="form-label">Status</label>
+                <%= form.select :status, Consultum.statuses.keys.map { |k| [k.humanize, k] }, {}, { class: "form-control" } %>
             </div>
             <div class="row">
               <div class="mb-3 col-md-6">
