@@ -10,7 +10,14 @@ class ConsultaController < ApplicationController
     @pagy, @consultas = pagy(@q.result(distinct: true).order(data_consulta: :desc))
     @pacientes = Paciente.all
     @medicos = Medico.all
+    
+    if params[:id]
+      @variavelnovadoid = Consultum.find(params[:id])
+    else
+      @variavelnovadoid = Consultum.last
+    end
   end
+  
   
 
   # GET /consulta/1 or /consulta/1.json

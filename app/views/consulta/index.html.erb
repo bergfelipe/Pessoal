@@ -202,38 +202,41 @@
                 <!-- ============================================================== -->
                 <div class="comment-widgets position-relative mb-2 simplebar-scrollable-y" data-simplebar="init" style="height: 660px"><div class="simplebar-wrapper" style="margin: 0px;"><div class="simplebar-height-auto-observer-wrapper"><div class="simplebar-height-auto-observer"></div></div><div class="simplebar-mask"><div class="simplebar-offset" style="right: 0px; bottom: 0px;"><div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: 100%; overflow: hidden scroll;"><div class="simplebar-content" style="padding: 0px;">
                   <!-- Comment Row -->
-                  
+                  <style>
+                    #back-button:hover {
+                      background-color: #e6e6e6 !important;
+                      border-radius: 10px;
+                    }
+                  </style>
                   <% @consultas.each do |f| %>
-                  <div class="d-flex gap-3 comment-row mb-5">
-                    <span class="flex-shrink-0">
-                      <div class="d-flex align-items-center gap-3 mb-4">
-                        <h5 class="me-1"><%= f.id  %></h5>
-                        <img src="/user-05.jpg" alt="user" width="56" height="56" class="rounded round-50">
-                        <h5 ><%= f.paciente.nome  %></h5>
-                      </div>
-                     
-                    </span>
-                    <div class="comment-text flex-grow-1 position-relative">
-                      <div class="d-flex justify-content-between align-items-center mb-1 position-relative">
-                        <div class="d-flex align-items-center gap-3">                       
-                          <span class="badge bg-success-subtle text-success rounded fw-semibold p-2 date-center">
-                            <%= formatar_data_hora_minuto(f.data_consulta) %>
-                          </span>
+                  <a id="back-button" href="<%= consulta_path(id: f.id) %>" style="text-decoration: none !important; display: block !important; transition: background-color 0.3s !important;">
+                    <div class="d-flex gap-3 comment-row mb-5">
+                      <span class="flex-shrink-0">
+                        <div class="d-flex align-items-center gap-3 mb-4">
+                          <h5 class="me-1"><%= f.id %></h5>
+                          <img src="/user-05.jpg" alt="user" width="56" height="56" class="rounded round-50">
+                          <h5><%= f.paciente.nome %></h5>
                         </div>
-                
-                        <div class="d-flex align-items-center gap-3 mb-9">
-                          <h5 class="mb-0">Dr.<%= f.medico.nome %></h5>
-                          <img width="56" height="56" class="rounded round-50" src="/user-06.jpg" alt="user" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Priyanka">
+                      </span>
+                      <div class="comment-text flex-grow-1 position-relative">
+                        <div class="d-flex justify-content-between align-items-center mb-1 position-relative">
+                          <div class="d-flex align-items-center gap-3">
+                            <span class="badge bg-success-subtle text-success rounded fw-semibold p-2 date-center">
+                              <%= formatar_data_hora_minuto(f.data_consulta) %>
+                            </span>
+                          </div>
+                          <div class="d-flex align-items-center gap-3 mb-9">
+                            <h5 class="mb-0">Dr.<%= f.medico.nome %></h5>
+                            <img width="56" height="56" class="rounded round-50" src="/user-06.jpg" alt="user" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-original-title="Priyanka">
+                          </div>
                         </div>
                       </div>
-                
-                    
+                      <!-- Linha vertical -->
+                      <div class="vertical-line"></div>
                     </div>
-                    <!-- Linha vertical -->
-                    <div class="vertical-line"></div>
-                  </div>
-                  
+                  </a>
                 <% end %>
+                
   
                     
                 </div></div></div></div><div class="simplebar-placeholder" style="width: 512px; height: 624px;"></div></div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="width: 0px; display: none;"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: visible;"><div class="simplebar-scrollbar" style="height: 361px; transform: translate3d(0px, 0px, 0px); display: block;"></div></div></div>
@@ -286,7 +289,7 @@
                                   <div class="d-flex align-items-center gap-3">
                                     <img src="/user-05.jpg" alt="user4" width="72" height="72" class="rounded-circle">
                                     <div>
-                                      <h6 class="fw-semibold fs-4 mb-0">Dr. Boris Brejka</h6>
+                                      <h6 class="fw-semibold fs-4 mb-0"><%=   @variavelnovadoid.paciente.nome %></h6>
                                       <p class="mb-0">05248685205</p>
                                     </div>
                                   </div>
@@ -294,31 +297,28 @@
                                 <div class="row">
                                   <div class="col-4 mb-7">
                                     <p class="mb-1 fs-2">Data da Consulta</p>
-                                    <h6 class="fw-semibold mb-0">Dia 18 de maio</h6>
+                                    <h6 class="fw-semibold mb-0"><%= formatar_data_hora_minuto( @variavelnovadoid.data_consulta) %></h6>
                                   </div>
                                   <div class="col-8 mb-7">
                                     <p class="mb-1 fs-2">Status</p>
-                                    <h6 class="fw-semibold mb-0">ativo</h6>
+                                    <h6 class="fw-semibold mb-0"><%=   @variavelnovadoid.status %></h6>
                                   </div>
                                   <div class="col-12 mb-9">
                                     <p class="mb-1 fs-2">Tipo</p>
-                                    <h6 class="fw-semibold mb-0">312, Imperical Arc, New western corner</h6>
+                                    <h6 class="fw-semibold mb-0"><%=   @variavelnovadoid.tipo %></h6>
                                   </div>
                                 
                                 </div>
                                 <div class="border-bottom pb-7 mb-4">
                                   <p class="mb-2 fs-2">Ficha</p>
                                   <p class="mb-3 text-dark">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque bibendum
-                                    hendrerit lobortis. Nullam ut lacus eros. Sed at luctus urna, eu fermentum
-                                    diam.
-                                    In et tristique mauris.
+                                    <%=   @variavelnovadoid.ficha %>
                                   </p>
-                                  <p class="mb-0 text-dark">Ut id ornare metus, sed auctor enim. Pellentesque
-                                    nisi magna, laoreet a augue eget, tempor volutpat diam.</p>
                                 </div>
                                 <div class="d-flex align-items-center gap-6">
-                                  <button class="btn btn-info fs-2" fdprocessedid="pk6kl8">Editar</button>
+                                  <%= link_to edit_consultum_path(@variavelnovadoid), class: 'fs-5 text-muted' do %>
+                                  <button class="btn btn-info fs-2" fdprocessedid="pk6kl8"> <i class="fas fa-edit"></i> Editar</button>
+                                <% end %>
                                   <button class="btn btn-success fs-2" fdprocessedid="83zpb">+ Nova Consulta a partir dessa</button>
                                 </div>
                               </div>
