@@ -31,7 +31,7 @@
   </div>
 
       <ul class="list-group" style="height: calc(100vh - 400px)" data-simplebar="init"><div class="simplebar-wrapper" style="margin: 0px;"><div class="simplebar-height-auto-observer-wrapper"><div class="simplebar-height-auto-observer"></div></div><div class="simplebar-mask"><div class="simplebar-offset" style="right: 0px; bottom: 0px;"><div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: 100%; overflow: hidden;"><div class="simplebar-content" style="padding: 0px;">
-
+        <li class="fw-semibold text-dark text-uppercase mx-9 my-2 px-3 fs-2">ATALHOS</li>
         <li class="list-group-item border-0 p-0 mx-9">
           <%= link_to consulta_path(q: { status_eq: Consultum.statuses[:ativa] }), class: 'd-flex align-items-center gap-6 list-group-item-action text-dark px-3 py-8 mb-1 rounded-1' do %>
             <i class="ti ti-calendar fs-5"></i>Consultas Ativas
@@ -56,13 +56,15 @@
         <li class="border-bottom my-3"></li>
         <li class="fw-semibold text-dark text-uppercase mx-9 my-2 px-3 fs-2">FILTRAR POR</li>
         <ul class="d-flex align-items-center">
+          <% if current_admin.perfil == 'admin' %>
           <li class="list-group-item border-0 p-0 mx-9">
             <%= f.hidden_field :medico_id_eq, id: "medico_id_field" %>
             <a href="#" data-bs-toggle="modal" data-bs-target="#medicoModal" class="gap-6 list-group-item-action text-dark px-3 py-8 mb-1 rounded-1">
               <img src="https://cdn-icons-png.flaticon.com/128/3762/3762767.png" width="40" height="40" class="mb-6 mx-auto" alt="">
               <h6>Médico</h6> 
-            </a>
+            </a> 
           </li>
+               <% end %>
           <li class="list-group-item border-0 p-0 mx-9">
             <%= f.hidden_field :paciente_id_eq, id: "paciente_id_field" %>
             <a href="#" data-bs-toggle="modal" data-bs-target="#pacienteModal" class="gap-6 list-group-item-action text-dark px-3 py-8 mb-1 rounded-1">
@@ -166,8 +168,12 @@
                 <%= f.date_field :data_consulta_lteq, class: "form-control" %>
               </div>
               <div class="col-2">
-                <%= button_tag(type: 'submit', class: 'btn btn-primary mt-4') do %>
+                <label >Ações</label>
+                <%= button_tag(type: 'submit', class: 'btn btn-sm mt-1', style: 'background-color: #04DFC0; color: white;') do %>
                   <i class="fas fa-search"></i> <!-- Adicione o ícone de busca aqui (Bootstrap Icons) -->
+                <% end %>
+                <%= link_to consulta_path, class: 'btn btn-primary btn-sm mt-1' do %>
+                <i class="fas fa-eraser"></i><!-- Adicione o ícone de busca aqui (Bootstrap Icons) -->
                 <% end %>
               </div>
             </div>
@@ -317,9 +323,18 @@
                                 </div>
                                 <div class="d-flex align-items-center gap-6">
                                   <%= link_to edit_consultum_path(@variavelnovadoid), class: 'fs-5 text-muted' do %>
-                                  <button class="btn btn-info fs-2" fdprocessedid="pk6kl8"> <i class="fas fa-edit"></i> Editar</button>
-                                <% end %>
-                                  <button class="btn btn-success fs-2" fdprocessedid="83zpb">+ Nova Consulta a partir dessa</button>
+                                    <button class="btn btn-info fs-2" fdprocessedid="pk6kl8">
+                                      <i class="fas fa-edit"></i> Editar
+                                    </button>
+                                  <% end %>
+                                  <%= link_to new_consultum_path(
+                                      paciente_id: @variavelnovadoid.paciente_id, 
+                                      medico_id: @variavelnovadoid.medico_id, 
+                                      tipo: @variavelnovadoid.tipo, 
+                                      status: @variavelnovadoid.status
+                                    ), class: 'btn fs-2', fdprocessedid: '83zpb', style: "background-color: #04DFC0; color: white;" do %>
+                                    <i class="fas fa-plus"></i> Nova Consulta a partir dessa
+                                  <% end %>
                                 </div>
                               </div>
                             </div>

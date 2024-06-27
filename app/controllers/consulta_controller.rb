@@ -28,7 +28,12 @@ class ConsultaController < ApplicationController
   def new
     @medicos = Medico.all
     @pacientes = Paciente.all
-    @consultum = Consultum.new
+    @consultum = Consultum.new(
+      paciente_id: params[:paciente_id], 
+      medico_id: params[:medico_id], 
+      tipo:  params[:tipo], 
+      status: params[:status]
+    )
   end
 
 
