@@ -291,15 +291,38 @@
                           <div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: 100%; overflow: hidden scroll;">
                             <div class="simplebar-content" style="padding: 20px;">
                               <div class="chat-list chat active-chat" data-user-id="1">
-                                <div class="hstack align-items-start mb-7 pb-1 align-items-center justify-content-between">
-                                  <div class="d-flex align-items-center gap-3">
-                                    <img src="/user-05.jpg" alt="user4" width="72" height="72" class="rounded-circle">
-                                    <div>
-                                      <h6 class="fw-semibold fs-4 mb-0"><%=   @variavelnovadoid.paciente.nome %></h6>
-                                      <p class="mb-0">05248685205</p>
+                                <div class="row">
+                                  <div class="col-4 mb-7">
+                                    <h6>Paciente</h6>
+                                    <div class="hstack align-items-start mb-7 pb-1 align-items-center justify-content-between">
+                                      <div class="d-flex align-items-center gap-3">
+                                        <img src="/user-05.jpg" alt="user4" width="72" height="72" class="rounded-circle">
+                                        <div>
+                                          <h6 class="fw-semibold fs-4 mb-0"><%= @variavelnovadoid.paciente.nome %></h6>
+                                          <p class="mb-0">05248685205</p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-4 mb-7 ms-auto">
+                                    <div class="hstack align-items-start mb-7 pb-1 align-items-center justify-content-between">
+                                      <div class="d-flex align-items-center gap-3">
+                                        <div>
+                                          <h6 class="fw-semibold fs-4 mb-0"><%= @variavelnovadoid.medico.nome %></h6>
+                                          <p class="mb-0"><%= @variavelnovadoid.medico.cpf %></p>
+                                        </div>
+                                        <div class="row">
+                                          <h6>Médico</h6>
+                                          <div class="col-4 mb-7">
+                                        <img src="/user-05.jpg" alt="user4" width="68" height="68" class="rounded-circle">
+                                      </div>
+                                      </div>
+                                    </div>
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
+                                
                                 <div class="row">
                                   <div class="col-4 mb-7">
                                     <p class="mb-1 fs-2">Data da Consulta</p>
@@ -343,6 +366,7 @@
                       </div>
                       <div class="simplebar-placeholder" style="width: auto; height: 578px;"></div>
                     </div>
+                  
                     <div class="simplebar-track simplebar-horizontal" style="visibility: hidden;">
                       <div class="simplebar-scrollbar" style="width: 0px; display: none;"></div>
                     </div>
