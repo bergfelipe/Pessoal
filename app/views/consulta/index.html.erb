@@ -15,8 +15,6 @@
   <div class="d-flex w-100">
     <div class="left-part border-end w-20 flex-shrink-0 d-none d-lg-block">
       <div class="container">
-    </div>
-      <div class="container">
       <img
       src="https://img.freepik.com/vetores-gratis/ilustracao-do-conceito-de-equipe-de-profissionais-de-saude_114360-1608.jpg?t=st=1718921666~exp=1718925266~hmac=36bea393b14581f783e9854e5078b651bdef954b64e6b7ce1ab5109819b89389&w=826"
       alt="homepage"
@@ -31,33 +29,33 @@
   </div>
 
       <ul class="list-group" style="height: calc(100vh - 400px)" data-simplebar="init"><div class="simplebar-wrapper" style="margin: 0px;"><div class="simplebar-height-auto-observer-wrapper"><div class="simplebar-height-auto-observer"></div></div><div class="simplebar-mask"><div class="simplebar-offset" style="right: 0px; bottom: 0px;"><div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: 100%; overflow: hidden;"><div class="simplebar-content" style="padding: 0px;">
-        <li class="fw-semibold text-dark text-uppercase mx-9 my-2 px-3 fs-2">ATALHOS</li>
+        <li class="fw-semibold text-dark text-uppercase mx-9 my-2 px-3 fs-3">ATALHOS</li>
         <li class="list-group-item border-0 p-0 mx-9">
           <%= link_to consulta_path(q: { status_eq: Consultum.statuses[:ativa] }), class: 'd-flex align-items-center gap-6 list-group-item-action text-dark px-3 py-8 mb-1 rounded-1' do %>
-            <i class="ti ti-calendar fs-5"></i>Consultas Ativas
+            <i class="ti ti-calendar fs-6"></i>Consultas Ativas
           <% end %>
         </li>
         <li class="list-group-item border-0 p-0 mx-9">
           <%= link_to consulta_path(q: { status_eq: Consultum.statuses[:concluida] }), class: 'd-flex align-items-center gap-6 list-group-item-action text-dark px-3 py-8 mb-1 rounded-1' do %>
-            <i class="ti ti-calendar-check fs-5"></i>Consultas Concluídas
+            <i class="ti ti-calendar-check fs-6"></i>Consultas Concluídas
           <% end %>
         </li>
         <li class="list-group-item border-0 p-0 mx-9">
           <%= link_to consulta_path(q: { status_eq: Consultum.statuses[:fechada] }), class: 'd-flex align-items-center gap-6 list-group-item-action text-dark px-3 py-8 mb-1 rounded-1' do %>
-            <i class="ti ti-alert-circle"></i>Consultas Fechadas
+            <i class="ti ti-calendar-off fs-6"></i>Consultas Fechadas
           <% end %>
         </li>
         <li class="list-group-item border-0 p-0 mx-9">
           <%= link_to consulta_path(q: { status_eq: Consultum.statuses[:apagada] }), class: 'd-flex align-items-center gap-6 list-group-item-action text-dark px-3 py-8 mb-1 rounded-1' do %>
-            <i class="ti ti-star"></i>Favoritas
+            <i class="ti ti-star fs-6"></i>Favoritas
           <% end %>
         </li>
           <%= search_form_for @q, url: consulta_path, method: :get, html: { id: 'search_form' } do |f| %>
         <li class="border-bottom my-3"></li>
-        <li class="fw-semibold text-dark text-uppercase mx-9 my-2 px-3 fs-2">FILTRAR POR</li>
+        <li class="fw-semibold text-dark text-uppercase mx-9 my-2 px-3 fs-3">FILTRAR POR</li>
         <ul class="d-flex align-items-center">
           <% if current_admin.perfil == 'admin' %>
-          <li class="list-group-item border-0 p-0 mx-9">
+          <li class="list-group-item border-0 p-0 mx-9 fs-5">
             <%= f.hidden_field :medico_id_eq, id: "medico_id_field" %>
             <a href="#" data-bs-toggle="modal" data-bs-target="#medicoModal" class="gap-6 list-group-item-action text-dark px-3 py-8 mb-1 rounded-1">
               <img src="https://cdn-icons-png.flaticon.com/128/3762/3762767.png" width="40" height="40" class="mb-6 mx-auto" alt="">
@@ -65,7 +63,7 @@
             </a> 
           </li>
                <% end %>
-          <li class="list-group-item border-0 p-0 mx-9">
+          <li class="list-group-item border-0 p-0 mx-9 fs-5">
             <%= f.hidden_field :paciente_id_eq, id: "paciente_id_field" %>
             <a href="#" data-bs-toggle="modal" data-bs-target="#pacienteModal" class="gap-6 list-group-item-action text-dark px-3 py-8 mb-1 rounded-1">
               <img src="https://cdn-icons-png.flaticon.com/128/4228/4228708.png" width="40" height="40" class="mb-6 mx-auto" alt="">
@@ -169,10 +167,10 @@
               </div>
               <div class="col-2">
                 <label >Ações</label>
-                <%= button_tag(type: 'submit', class: 'btn btn-sm mt-1', style: 'background-color: #04DFC0; color: white;') do %>
+                <%= button_tag(type: 'submit', class: 'btn btn-sm mt-1 fs-2', style: 'background-color: #04DFC0; color: white;') do %>
                   <i class="fas fa-search"></i> <!-- Adicione o ícone de busca aqui (Bootstrap Icons) -->
                 <% end %>
-                <%= link_to consulta_path, class: 'btn btn-primary btn-sm mt-1' do %>
+                <%= link_to consulta_path, class: 'btn btn-primary btn-sm mt-1 fs-2' do %>
                 <i class="fas fa-eraser"></i><!-- Adicione o ícone de busca aqui (Bootstrap Icons) -->
                 <% end %>
               </div>
@@ -250,13 +248,12 @@
             </div>
         </div>
       </div>
-      <div class="w-100" style="margin-top: -354px;">
-        <div class="chat-container h-100 w-100">
+
           <div class="chat-box-inner-part h-100">
             <div class="chatting-box app-email-chatting-box">
-              <div class="p-9 py-3 border-bottom chat-meta-user d-flex align-items-center justify-content-between chat-active">
+              <div class="card-header py-3 border-bottom d-flex align-items-center">
                 <h5 class="text-dark mb-0 fs-5">Detalhes da Consulta</h5>
-                <ul class="list-unstyled mb-0 d-flex align-items-center">
+                <ul class="list-unstyled mb-0 d-flex ms-auto">
                   <li class="d-lg-none d-block">
                     <a class="text-dark back-btn px-2 fs-5 bg-hover-primary nav-icon-hover position-relative z-index-5" href="javascript:void(0)">
                       <i class="ti ti-arrow-left"></i>
@@ -279,106 +276,64 @@
                   </li>
                 </ul>
               </div>
-              <div class="position-relative overflow-hidden">
-                <div class="position-relative">
-                  <div class="chat-box p-9" style="height: calc(100vh - 428px)" data-simplebar="init">
-                    <div class="simplebar-wrapper" style="margin: -20px;">
-                      <div class="simplebar-height-auto-observer-wrapper">
-                        <div class="simplebar-height-auto-observer"></div>
-                      </div>
-                      <div class="simplebar-mask">
-                        <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
-                          <div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: 100%; overflow: hidden scroll;">
-                            <div class="simplebar-content" style="padding: 20px;">
-                              <div class="chat-list chat active-chat" data-user-id="1">
-                                <div class="row">
-                                  <div class="col-4 mb-7">
-                                    <h6>Paciente</h6>
-                                    <div class="hstack align-items-start mb-7 pb-1 align-items-center justify-content-between">
-                                      <div class="d-flex align-items-center gap-3">
-                                        <img src="/user-05.jpg" alt="user4" width="72" height="72" class="rounded-circle">
-                                        <div>
-                                          <h6 class="fw-semibold fs-4 mb-0"><%= @variavelnovadoid.paciente.nome %></h6>
-                                          <p class="mb-0">05248685205</p>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="col-4 mb-7 ms-auto">
-                                    <div class="hstack align-items-start mb-7 pb-1 align-items-center justify-content-between">
-                                      <div class="d-flex align-items-center gap-3">
-                                        <div>
-                                          <h6 class="fw-semibold fs-4 mb-0"><%= @variavelnovadoid.medico.nome %></h6>
-                                          <p class="mb-0"><%= @variavelnovadoid.medico.cpf %></p>
-                                        </div>
-                                        <div class="row">
-                                          <h6>Médico</h6>
-                                          <div class="col-4 mb-7">
-                                        <img src="/user-05.jpg" alt="user4" width="68" height="68" class="rounded-circle">
-                                      </div>
-                                      </div>
-                                    </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                                
-                                <div class="row">
-                                  <div class="col-4 mb-7">
-                                    <p class="mb-1 fs-2">Data da Consulta</p>
-                                    <h6 class="fw-semibold mb-0"><%= formatar_data_hora_minuto( @variavelnovadoid.data_consulta) %></h6>
-                                  </div>
-                                  <div class="col-8 mb-7">
-                                    <p class="mb-1 fs-2">Status</p>
-                                    <h6 class="fw-semibold mb-0"><%=   @variavelnovadoid.status %></h6>
-                                  </div>
-                                  <div class="col-12 mb-9">
-                                    <p class="mb-1 fs-2">Tipo</p>
-                                    <h6 class="fw-semibold mb-0"><%=   @variavelnovadoid.tipo %></h6>
-                                  </div>
-                                
-                                </div>
-                                <div class="border-bottom pb-7 mb-4">
-                                  <p class="mb-2 fs-2">Ficha</p>
-                                  <p class="mb-3 text-dark">
-                                    <%=   @variavelnovadoid.ficha %>
-                                  </p>
-                                </div>
-                                <div class="d-flex align-items-center gap-6">
-                                  <%= link_to edit_consultum_path(@variavelnovadoid), class: 'fs-5 text-muted' do %>
-                                    <button class="btn btn-info fs-2" fdprocessedid="pk6kl8">
-                                      <i class="fas fa-edit"></i> Editar
-                                    </button>
-                                  <% end %>
-                                  <%= link_to new_consultum_path(
-                                      paciente_id: @variavelnovadoid.paciente_id, 
-                                      medico_id: @variavelnovadoid.medico_id, 
-                                      tipo: @variavelnovadoid.tipo, 
-                                      status: @variavelnovadoid.status
-                                    ), class: 'btn fs-2', fdprocessedid: '83zpb', style: "background-color: #04DFC0; color: white;" do %>
-                                    <i class="fas fa-plus"></i> Nova Consulta a partir dessa
-                                  <% end %>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="simplebar-placeholder" style="width: auto; height: 578px;"></div>
-                    </div>
-                  
-                    <div class="simplebar-track simplebar-horizontal" style="visibility: hidden;">
-                      <div class="simplebar-scrollbar" style="width: 0px; display: none;"></div>
-                    </div>
-                    <div class="simplebar-track simplebar-vertical" style="visibility: visible;">
-                      <div class="simplebar-scrollbar" style="height: 128px; transform: translate3d(0px, 0px, 0px); display: block;"></div>
-                    </div>
+              
+              <br>
+              <div class="container" style="max-width: 900px !important;">
+                <h5><%= @variavelnovadoid.tipo %></h5>
+              <div class="card border-start border-top border-secondary">
+                <div class="card-body">
+                <div class="row">
+              <div class="col-md-6">
+                <div class="card text-center border-start border-success" role="alert">
+                  <div class="p-2 d-block mt-3">
+                    <h5>Paciente</h5>
+                    <img src="user-05.jpg" width="88" class="rounded-circle img-fluid">
+                    <h5 class="card-title mt-3"><%= @variavelnovadoid.paciente.nome %></h5>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card text-center border-start border-warning" role="alert">
+                  <div class="p-2 d-block mt-3">
+                    <h5>Médico</h5>
+                    <img src="user-06.jpg" width="88" class="rounded-circle img-fluid">
+                    <h5 class="card-title mt-3"><%= @variavelnovadoid.medico.nome %></h5>
+
                   </div>
                 </div>
               </div>
             </div>
+            <div class="p-4 rounded-2 text-bg-light mb-3 border-start border-info">
+              <div class="d-flex align-items-center gap-6 flex-wrap">
+                <h6 class="fw-semibold mb-0 fs-4">Ficha</h6>
+                <span class="fs-2"><span class="p-1 text-bg-muted rounded-circle d-inline-block"></span> <span class="badge bg-success-subtle text-success rounded fw-semibold">
+                  <%= formatar_data_hora_minuto( @variavelnovadoid.data_consulta) %>
+                </span></span>
+              </div>
+              <p class="my-3" style="min-width: 802px !important; "><%= @variavelnovadoid.ficha %>
+              </p>
+            </div>
+            <div class="d-flex align-items-center gap-6">
+              <%= link_to edit_consultum_path(@variavelnovadoid), class: 'fs-5 text-muted' do %>
+                <button class="btn btn-info fs-2" fdprocessedid="pk6kl8">
+                  <i class="fas fa-edit"></i> Editar
+                </button>
+              <% end %>
+              <%= link_to new_consultum_path(
+                  paciente_id: @variavelnovadoid.paciente_id, 
+                  medico_id: @variavelnovadoid.medico_id, 
+                  tipo: @variavelnovadoid.tipo, 
+                  status: @variavelnovadoid.status
+                ), class: 'btn fs-2', fdprocessedid: '83zpb', style: "background-color: #04DFC0; color: white;" do %>
+                <i class="fas fa-plus"></i> Nova Consulta a partir dessa
+              <% end %>
+            </div>
+              </div>
+            </div>
           </div>
-        </div>
+              </div>
+            </div>
+
       </div>
     </div>
   </div>
@@ -472,7 +427,6 @@
 
   .d-flex {
     display: flex !important;
-    align-items: center !important;
   }
 
   .gap-3 {
