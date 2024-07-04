@@ -225,9 +225,19 @@
                       <div class="comment-text flex-grow-1 position-relative">
                         <div class="d-flex justify-content-between align-items-center mb-1 position-relative">
                           <div class="d-flex align-items-center gap-3">
+                            <% if f.status == 'concluida' %>
                             <span class="badge bg-success-subtle text-success rounded fw-semibold p-2 date-center">
                               <%= formatar_data_hora_minuto(f.data_consulta) %>
                             </span>
+                            <% elsif f.status == 'ativa' %>
+                            <span class="badge bg-info-subtle text-info rounded fw-semibold p-2 date-center">
+                              <%= formatar_data_hora_minuto(f.data_consulta) %>
+                            </span>
+                            <% elsif f.status == 'fechada' %>
+                            <span class="badge bg-danger-subtle text-danger rounded fw-semibold p-2 date-center">
+                              <%= formatar_data_hora_minuto(f.data_consulta) %>
+                            </span>
+                            <% end %>
                           </div>
                           <div class="d-flex align-items-center gap-3 mb-9">
                             <h5 class="mb-0">Dr.<%= f.medico.nome %></h5>
@@ -252,7 +262,7 @@
           <div class="chat-box-inner-part h-100">
             <div class="chatting-box app-email-chatting-box">
               <div class="card-header py-3 border-bottom d-flex align-items-center">
-                <h5 class="text-dark mb-0 fs-5">Detalhes da Consulta</h5>
+                <h5 class="text-dark mb-0 fs-5 me-2">Detalhes da Consulta </h5> <h5 class="text-dark mb-0 fs-5"><%= @variavelnovadoid.id %></h5>
                 <ul class="list-unstyled mb-0 d-flex ms-auto">
                   <li class="d-lg-none d-block">
                     <a class="text-dark back-btn px-2 fs-5 bg-hover-primary nav-icon-hover position-relative z-index-5" href="javascript:void(0)">
@@ -279,12 +289,27 @@
               
               <br>
               <div class="container" style="max-width: 900px !important;">
-                <h5><%= @variavelnovadoid.tipo %></h5>
-              <div class="card border-start border-top border-secondary">
+                <div class="d-flex align-items-center">
+                  <h5 class="me-2"><%= @variavelnovadoid.tipo %></h5>
+                  <% if @variavelnovadoid.status == 'concluida' %>
+                  <span class="badge bg-success-subtle text-success rounded fw-semibold mb-2 fs-3">
+                    <%= @variavelnovadoid.status %>
+                  </span>
+                  <% elsif @variavelnovadoid.status == 'ativa' %>
+                  <span class="badge bg-info-subtle text-info rounded fw-semibold mb-2 fs-3">
+                    <%= @variavelnovadoid.status %>
+                  </span>
+                  <% elsif @variavelnovadoid.status == 'fechada' %>
+                  <span class="badge bg-danger-subtle text-danger rounded fw-semibold mb-2 fs-3">
+                    <%= @variavelnovadoid.status %>
+                  </span>
+                  <% end %>
+                </div>
+              <div class="card border-start border-top border-info">
                 <div class="card-body">
                 <div class="row">
               <div class="col-md-6">
-                <div class="card text-center border-start border-success" role="alert">
+                <div class="card text-center border-start border-top border-info" role="alert">
                   <div class="p-2 d-block mt-3">
                     <h5>Paciente</h5>
                     <img src="user-05.jpg" width="88" class="rounded-circle img-fluid">
@@ -293,7 +318,7 @@
                 </div>
               </div>
               <div class="col-md-6">
-                <div class="card text-center border-start border-warning" role="alert">
+                <div class="card text-center border-start border-top border-info" role="alert">
                   <div class="p-2 d-block mt-3">
                     <h5>Médico</h5>
                     <img src="user-06.jpg" width="88" class="rounded-circle img-fluid">
@@ -303,12 +328,24 @@
                 </div>
               </div>
             </div>
-            <div class="p-4 rounded-2 text-bg-light mb-3 border-start border-info">
+            <div class="p-4 rounded-2 text-bg-light mb-3 border-start border-top border-info">
               <div class="d-flex align-items-center gap-6 flex-wrap">
                 <h6 class="fw-semibold mb-0 fs-4">Ficha</h6>
-                <span class="fs-2"><span class="p-1 text-bg-muted rounded-circle d-inline-block"></span> <span class="badge bg-success-subtle text-success rounded fw-semibold">
+                <span class="fs-2"><span class="p-1 text-bg-muted rounded-circle d-inline-block"></span> 
+                <% if @variavelnovadoid.status == 'concluida' %>
+                <span class="badge bg-success-subtle text-success rounded fw-semibold">
                   <%= formatar_data_hora_minuto( @variavelnovadoid.data_consulta) %>
-                </span></span>
+                </span>
+                <% elsif @variavelnovadoid.status == 'ativa' %>
+                <span class="badge bg-info-subtle text-info rounded fw-semibold">
+                  <%= formatar_data_hora_minuto( @variavelnovadoid.data_consulta) %>
+                </span>
+                <% elsif @variavelnovadoid.status == 'fechada' %>
+                <span class="badge bg-danger-subtle text-danger rounded fw-semibold">
+                  <%= formatar_data_hora_minuto( @variavelnovadoid.data_consulta) %>
+                </span>
+                <% end %>
+              </span>
               </div>
               <p class="my-3" style="min-width: 802px !important; "><%= @variavelnovadoid.ficha %>
               </p>
