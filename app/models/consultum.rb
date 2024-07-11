@@ -1,7 +1,7 @@
 class Consultum < ApplicationRecord
   belongs_to :medico
   belongs_to :paciente
-  enum status: { apagada: 0, ativa: 1, concluida: 2, fechada: 3 }
+  enum status: { apagada: 0, ativa: 1, concluida: 2, fechada: 3, em_andamento: 4}
   accepts_nested_attributes_for :paciente, reject_if: :all_blank, allow_destroy: true
 
   def tempo_restante

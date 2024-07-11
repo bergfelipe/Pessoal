@@ -11,7 +11,16 @@ Rails.application.routes.draw do
   end
 
   resources :pacientes
-  resources :consulta
+  resources :consulta do
+    member do
+      patch :ativar
+      patch :apagar
+      patch :fechar
+      patch :em_andamento
+      patch :concluida
+    end
+  end
+  
   resources :medicos
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

@@ -3,7 +3,8 @@ class PacientesController < ApplicationController
 
   # GET /pacientes or /pacientes.json
   def index
-    @pacientes = Paciente.all
+    @q = Paciente.ransack(params[:q])
+    @pagy, @pacientes = pagy(@q.result(distinct: true).order(created_at: :desc))
   end
 
   # GET /pacientes/1 or /pacientes/1.json

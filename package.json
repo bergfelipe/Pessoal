@@ -9,5 +9,8 @@
     "postcss-cli": "^8.0.0",
     "webpack": "^5.0.0",
     "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "sweetalert2": "^11.12.2"
   }
 }

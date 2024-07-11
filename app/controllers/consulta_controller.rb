@@ -1,13 +1,39 @@
 class ConsultaController < ApplicationController
-  before_action :set_consultum, only: %i[ show edit update destroy ]
+  before_action :set_consultum, only: %i[show edit update destroy ativar apagar fechar concluida em_andamento]
   before_action :store_referer, only: [:new, :edit]
 
+
+  def concluida
+    @consultum.update(status: :concluida)
+    redirect_to consulta_path, notice: "Consultum foi ativada com sucesso."
+  end
+
+  def em_andamento
+    @consultum.update(status: :em_andamento)
+    redirect_to consulta_path, notice: "Consultum foi ativada com sucesso."
+  end
+
+  def ativar
+    @consultum.update(status: :ativa)
+    redirect_to consulta_path, notice: "Consultum foi ativada com sucesso."
+  end
+
+  def apagar
+    @consultum.update(status: :apagada)
+    redirect_to consulta_url, notice: "Consultum foi apagada com sucesso."
+  end
+
+  def fechar
+    @consultum.update(status: :fechada)
+    redirect_to consulta_url, notice: "Consultum foi apagada com sucesso."
+  end
 
 
   # GET /consulta or /consulta.json
   def index
+    @hoje = Time.now.strftime("%H:%M:%S")
     @q = Consultum.ransack(params[:q])
-    @pagy, @consultas = pagy(@q.result(distinct: true).order(data_consulta: :desc))
+    @pagy, @consultas = pagy(@q.result(distinct: true).where.not(status: :apagada).order(data_consulta: :desc))
     @pacientes = Paciente.all
     @medicos = Medico.all
     
