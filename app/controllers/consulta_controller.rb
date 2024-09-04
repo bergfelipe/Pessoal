@@ -1,31 +1,31 @@
 class ConsultaController < ApplicationController
   before_action :set_consultum, only: %i[show edit update destroy ativar apagar fechar concluida em_andamento]
-  before_action :store_referer, only: [:new, :edit]
+  before_action :store_referer, only: [:new, :edit, :concluida, :em_andamento, :ativar, :apagar, :fechar]
 
 
   def concluida
     @consultum.update(status: :concluida)
-    redirect_to consulta_path, notice: "Consultum foi ativada com sucesso."
+    redirect_based_on_referer("Consultum foi concluída com sucesso.")
   end
 
   def em_andamento
     @consultum.update(status: :em_andamento)
-    redirect_to consulta_path, notice: "Consultum foi ativada com sucesso."
+    redirect_based_on_referer("Consultum foi marcada como em andamento.")
   end
 
   def ativar
     @consultum.update(status: :ativa)
-    redirect_to consulta_path, notice: "Consultum foi ativada com sucesso."
+    redirect_based_on_referer("Consultum foi ativada com sucesso.")
   end
 
   def apagar
     @consultum.update(status: :apagada)
-    redirect_to consulta_url, notice: "Consultum foi apagada com sucesso."
+    redirect_based_on_referer("Consultum foi apagada com sucesso.")
   end
 
   def fechar
     @consultum.update(status: :fechada)
-    redirect_to consulta_url, notice: "Consultum foi apagada com sucesso."
+    redirect_based_on_referer("Consultum foi fechada com sucesso.")
   end
 
 
@@ -42,6 +42,10 @@ class ConsultaController < ApplicationController
     else
       @variavelnovadoid = Consultum.last
     end
+
+
+   if  params[:status_eq].present?
+   end
   end
   
   
@@ -116,6 +120,14 @@ class ConsultaController < ApplicationController
   end
 
   private
+
+  def redirect_based_on_referer(notice)
+    if request.referer&.include?(home_path)
+      redirect_to home_path, notice: notice
+    else
+      redirect_to consulta_path, notice: notice
+    end
+  end
 
     def store_referer
       session[:referer] = request.referer

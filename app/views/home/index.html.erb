@@ -125,59 +125,100 @@
                 <% else %>
                   <% if params[:q].present? || current_admin.tipo == 'secretaria' %>
                   <% @consultas.each do |f| %>
-                  <div class="d-flex gap-9 comment-row mb-5">
-                    <span class="flex-shrink-0">
-                      <%= link_to paciente_path(f.paciente) do %>
-                        <img src="/user-05.jpg" alt="user" width="56" height="56" class="rounded round-50">
-                      <% end %>
-                    </span>
-                    <div class="comment-text flex-grow-1">
-                      <div class="hstack justify-content-between gap-6 mb-1">
-                        <div class="d-flex align-items-center gap-6">
-                          <h5 class="mb-0">
-                            <%= link_to f.paciente.nome, paciente_path(f.paciente) %>
-                          </h5>
-                          <p class="mb-0 fs-3"><%= tempo_restante(f.data_consulta) %></p>
-                        </div>
-                        <span class="badge bg-success-subtle text-success rounded fw-semibold p-2 ms-auto">
-                          <%= formatar_data_hora_minuto(f.data_consulta) %>
+                    <div class="d-flex gap-9 comment-row mb-5">
+                        <span class="flex-shrink-0">
+                          <%= link_to paciente_path(f.paciente) do %>
+                            <img src="/user-05.jpg" alt="user" width="56" height="56" class="rounded round-50">
+                          <% end %>
                         </span>
-                      </div>                        
-                      <% if f.tipo.nil? %>
-                        <p class="comment-details mb-6 fs-3 text-muted truncate-2 truncate-2">
-                          Nenhuma descrição a ser exibida.
-                        </p>
-                      <% else %>
-                        <p class="comment-details mb-6 fs-3 text-muted truncate-2 truncate-2">
-                          <%= f.tipo %>
-                        </p>
-                      <% end %>
-                      <ul class="list-unstyled mb-0 hstack gap-3 lh-1">
-                        <li data-toggle="tooltip" data-placement="bottom" title="Editar Consulta">
-                          <%= link_to edit_consultum_path(f), class: 'fs-5 text-muted' do %>
-                            <i class="fas fa-edit"></i>
+                        <div class="comment-text flex-grow-1">
+                          <div class="hstack justify-content-between gap-6 mb-1">
+                            <div class="d-flex align-items-center gap-6">
+                              <h5 class="mb-0">
+                                <%= link_to f.paciente.nome, paciente_path(f.paciente) %>
+                              </h5> 
+                              <p class="mb-0 fs-3"><%= tempo_restante(f.data_consulta) %></p>
+                            </div>
+
+
+                            <% if f.status == 'concluida' %>
+                            <span class="badge bg-success-subtle text-success rounded fw-semibold p-2 date-center">
+                              <%= formatar_data_hora_minuto(f.data_consulta) %>
+                            </span>
+                            <% elsif f.status == 'ativa' %>
+                            <span class="badge bg-info-subtle text-info rounded fw-semibold p-2 date-center">
+                              <%= formatar_data_hora_minuto(f.data_consulta) %>
+                            </span>
+                            <% elsif f.status == 'fechada' %>
+                            <span class="badge bg-danger-subtle text-danger rounded fw-semibold p-2 date-center">
+                              <%= formatar_data_hora_minuto(f.data_consulta) %>
+                            </span>
+                            <% elsif f.status == 'em_andamento' %>
+                            <span class="badge bg-secondary-subtle text-secondary rounded fw-semibold p-2 date-center">
+                              <%= formatar_data_hora_minuto(f.data_consulta) %>
+                            </span>
+                            <% end %>
+
+                          </div>
+                          <% if f.tipo.nil? %>
+                            <p class="comment-details mb-6 fs-3 text-muted truncate-2 truncate-2">
+                              Nenhuma descrição a ser exibida.
+                            </p>
+                          <% else %>
+                            <p class="comment-details mb-6 fs-3 text-muted truncate-2 truncate-2">
+                              <%= f.tipo %>
+                            </p>
                           <% end %>
-                        </li>
-                        <li data-toggle="tooltip" data-placement="bottom" title="Ver Consulta">
-                          <%= link_to f, class: 'fs-6 text-muted' do %>
-                            <i class="far fa-calendar-alt"></i>
-                          <% end %>
-                        </li>
-                        <li data-bs-toggle="modal" data-bs-target="#fichaModal" data-toggle="tooltip"
-                          data-placement="bottom" title="Ver Ficha">
-                          <a class="fs-6 text-muted" href="javascript:void(0)" data-consulta-id="<%= f.id %>"
-                            data-consulta-paciente="<%= f.paciente.nome %>"
-                            data-consulta-ficha="<%= f.paciente.ficha %>"
-                            data-consulta-consulta-ficha="<%= f.ficha %>" onclick="openFichaModal(this)">
-                            <i class="fas fa-notes-medical"></i>
-                          </a>
-                        </li>
-                        <%= link_to medico_path(f.medico), class: 'ms-auto' do %>
-                        <h6 class="mb-0"><i class="fas fa-user-md me-1"></i>Dr.<%= f.medico.nome %></h6>
-                        <% end %>
-                      </ul>
-                    </div>
-                  </div>
+                          <ul class="list-unstyled mb-0 d-flex justify-content-between lh-1">
+                            <div class="d-flex gap-2">
+                              <li data-toggle="tooltip" data-placement="bottom" title="Editar Consulta">
+                                <%= link_to edit_consultum_path(f), class: 'fs-6 text-muted' do %>
+                                  <i class="fas fa-edit "></i>
+                                <% end %>
+                              </li>
+                              <li data-toggle="tooltip" data-placement="bottom" title="Ver Consulta">
+                                <%= link_to f, class: 'fs-6 text-muted' do %>
+                                  <i class="fas fa-calendar-alt"></i>
+                                <% end %>
+                              </li>
+                              <li data-bs-toggle="modal" data-bs-target="#fichaModal" data-toggle="tooltip"
+                                data-placement="bottom" title="Ver Ficha">
+                                <a class="fs-6 text-muted" href="javascript:void(0)" data-consulta-id="<%= f.id %>"
+                                  data-consulta-paciente="<%= f.paciente.nome %>"
+                                  data-consulta-ficha="<%= f.paciente.ficha %>"
+                                  data-consulta-consulta-ficha="<%= f.ficha %>" onclick="openFichaModal(this)">
+                                  <i class="fas fa-notes-medical"></i>
+                                </a>
+                              </li>
+                              <%= link_to medico_path(f.medico), class: 'ms-auto' do %>
+                              <h6 class="mb-0"><i class="fas fa-user-md me-1"></i>Dr.<%= f.medico.nome %></h6>
+                              <% end %>
+                            </div>
+                            <% consulta_time = f.data_consulta.strftime("%H:%M:%S") %>
+                            <% if (Time.parse(consulta_time) - Time.parse(@hoje)) <= 1.minute && f.status == 'ativa' %>
+                            <span class="badge bg-secondary-subtle text-danger rounded fw-semibold d-block mb-2 fs-2">
+                              <i class="fas fa-exclamation-circle me-1"></i> Altere o status
+                            </span>
+                            <div class="d-flex gap-1">
+                              <%= form_with url: em_andamento_consultum_path(f), method: :patch, class: 'd-inline confirmable-form' do %>
+                                  <button type="submit" class="btn btn-success btn-sm fs-2" 
+                                  data-confirm-message="Tem certeza? A consulta ficará Em andamento">
+                                  <i class="fas fa-check-circle me-1"></i>Começar
+                                  </button>
+                                <% end %>
+                                <%= form_with url: fechar_consultum_path(f), method: :patch, class: 'd-inline confirmable-form' do %>
+                                <button type="submit" class="btn btn-danger btn-sm fs-2" 
+                                data-confirm-message="Tem certeza que deseja fechar a consulta?">
+                                    <i class="fas fa-times-circle me-1"></i> Fechar
+                                  </button>
+                                <% end %>
+                            </div>
+                            <% end %>
+                          </ul>
+                          
+                        
+                        </div>
+                      </div>
                     <% end %>
                   <% else %>
                   <% @consulta_comp.each do |f| %>
@@ -317,6 +358,7 @@
                             </a>
                           </li>
                         </ul>
+                        
                       </div>
                     </div>
                       <% end %>
@@ -334,11 +376,36 @@
                               <h5 class="mb-0">
                                 <%= link_to f.paciente.nome, paciente_path(f.paciente) %>
                               </h5> 
+                              <% if f.status == 'em_andamento' %>
+                              <p class="mb-0 fs-3">Quando a Consulta acabar, Finalize</p>
+                              <% elsif f.status == 'fechada'  %>
+                              <p class="mb-0 fs-3">Consulta Fechada</p>
+                              <% else %>
                               <p class="mb-0 fs-3"><%= tempo_restante(f.data_consulta) %></p>
+                              <% end %>
                             </div>
-                            <span class="badge bg-success-subtle text-success rounded fw-semibold p-2 ms-auto">
-                              <%= formatar_data_hora_minuto(f.data_consulta) %>
+
+
+                            <% if f.status == 'concluida' %>
+                            <span class="badge bg-success-subtle text-success rounded fw-semibold p-2 d-block text-center">
+                              <div class="fs-2"><%= formatar_data_hora_minuto(f.data_consulta) %></div>
                             </span>
+                          <% elsif f.status == 'ativa' %>
+                            <span class="badge bg-info-subtle text-info rounded fw-semibold p-2 d-block text-center">
+                              <div class="fs-2"><%= formatar_data_hora_minuto(f.data_consulta) %></div>
+                            </span>
+                          <% elsif f.status == 'fechada' %>
+                            <span class="badge bg-danger-subtle text-danger rounded fw-semibold p-2 d-block text-center">
+                              <div class="fs-2"><%= formatar_data_hora_minuto(f.data_consulta) %></div>
+                            </span>
+                          <% elsif f.status == 'em_andamento' %>
+                            <span class="badge bg-secondary-subtle text-secondary rounded fw-semibold p-2 d-block text-center">
+                              <div class="fs-2 mb-1"><%= f.status %></div>
+                              <div class="fs-2"><%= formatar_data_hora_minuto(f.data_consulta) %></div>
+                            </span>
+                          <% end %>
+                          
+
                           </div>
                           <% if f.tipo.nil? %>
                             <p class="comment-details mb-6 fs-3 text-muted truncate-2 truncate-2">
@@ -349,27 +416,66 @@
                               <%= f.tipo %>
                             </p>
                           <% end %>
-                          <ul class="list-unstyled mb-0 hstack gap-3 lh-1">
-                            <li data-toggle="tooltip" data-placement="bottom" title="Editar Consulta">
-                              <%= link_to edit_consultum_path(f), class: 'fs-5 text-muted' do %>
-                                <i class="fas fa-edit"></i>
-                              <% end %>
-                            </li>
-                            <li data-toggle="tooltip" data-placement="bottom" title="Ver Consulta">
-                              <%= link_to f, class: 'fs-6 text-muted' do %>
-                                <i class="far fa-calendar-alt"></i>
-                              <% end %>
-                            </li>
-                            <li data-bs-toggle="modal" data-bs-target="#fichaModal" data-toggle="tooltip"
-                              data-placement="bottom" title="Ver Ficha">
-                              <a class="fs-6 text-muted" href="javascript:void(0)" data-consulta-id="<%= f.id %>"
-                                data-consulta-paciente="<%= f.paciente.nome %>"
-                                data-consulta-ficha="<%= f.paciente.ficha %>"
-                                data-consulta-consulta-ficha="<%= f.ficha %>" onclick="openFichaModal(this)">
-                                <i class="fas fa-notes-medical"></i>
-                              </a>
-                            </li>
+                          <ul class="list-unstyled mb-0 d-flex justify-content-between lh-1">
+                            <div class="d-flex gap-2">
+                              <li data-toggle="tooltip" data-placement="bottom" title="Editar Consulta">
+                                <%= link_to edit_consultum_path(f), class: 'fs-6 text-muted' do %>
+                                  <i class="fas fa-edit "></i>
+                                <% end %>
+                              </li>
+                              <li data-toggle="tooltip" data-placement="bottom" title="Visualizar Consulta">
+                                <%= link_to consulta_path(id: f.id), class: 'fs-6 text-muted' do %>
+                                  <i class="fas fa-search"></i>
+                                <% end %>
+                              </li>
+                              <li data-bs-toggle="modal" data-bs-target="#fichaModal" data-toggle="tooltip"
+                                data-placement="bottom" title="Ver Ficha">
+                                <a class="fs-6 text-muted" href="javascript:void(0)" data-consulta-id="<%= f.id %>"
+                                  data-consulta-paciente="<%= f.paciente.nome %>"
+                                  data-consulta-ficha="<%= f.paciente.ficha %>"
+                                  data-consulta-consulta-ficha="<%= f.ficha %>" onclick="openFichaModal(this)">
+                                  <i class="fas fa-notes-medical"></i>
+                                </a>
+                              </li>
+                            </div>
+                            <% consulta_time = f.data_consulta.strftime("%H:%M:%S") %>
+                            <% if (Time.parse(consulta_time) - Time.parse(@hoje)) <= 1.minute && f.status == 'ativa' %>
+                            <span class="badge bg-secondary-subtle text-danger rounded fw-semibold d-block mb-2 fs-2">
+                              <i class="fas fa-exclamation-circle me-1"></i> Altere o status
+                            </span>
+                            <div class="d-flex gap-1">
+                              <%= form_with url: em_andamento_consultum_path(f), method: :patch, class: 'd-inline confirmable-form' do %>
+                                  <button type="submit" class="btn btn-success btn-sm fs-2" 
+                                  data-confirm-message="Tem certeza? A consulta ficará Em andamento">
+                                  <i class="fas fa-check-circle me-1"></i>Começar
+                                  </button>
+                                <% end %>
+                                <%= form_with url: fechar_consultum_path(f), method: :patch, class: 'd-inline confirmable-form' do %>
+                                <button type="submit" class="btn btn-danger btn-sm fs-2" 
+                                data-confirm-message="Tem certeza que deseja fechar a consulta?">
+                                    <i class="fas fa-times-circle me-1"></i> Fechar
+                                  </button>
+                                <% end %>
+                            </div>
+                            <% elsif f.status=='em_andamento' %>
+                              <%= form_with url: concluida_consultum_path(f), method: :patch, class: 'd-inline confirmable-form' do
+                                %>
+                                <button type="submit" class="btn btn-secondary btn-sm fs-3"
+                                  data-confirm-message="Tem Certeza que deseja concluir a consulta?">
+                                  <i class="fas fa-check-square me-1"></i>Finalizar Consulta
+                                </button>
+                                <br>
+                                <% end %>
+                                <% elsif f.status == 'concluida' %>
+
+                                <span class="badge bg-secondary-subtle text-success rounded fw-semibold d-block mb-2 fs-3">
+                                  <i class="ti ti-calendar-check me-1 fs-5"></i> Consulta Concluida
+                                </span>
+
+                                  <% end %>
                           </ul>
+                          
+                        
                         </div>
                       </div>
                       <% end %>

@@ -24,7 +24,7 @@ module ApplicationHelper
     
       # Verifique se a consulta já ocorreu
       if diferenca_em_segundos <= 0
-        return "consulta já ocorreu"
+        return "Por favor, atualize o status da consulta"
       end
     
       # Converta a diferença para minutos
